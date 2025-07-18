@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIfluence - Test Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+        }
+        .test-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            color: white;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div class="test-message">
+        <h1 class="text-2xl font-bold text-blue-400 mb-4">🎉 AIfluence Test</h1>
+        <p class="text-gray-300">If you can see this message, the basic HTML structure is working!</p>
+        <button id="test-btn" class="mt-4 px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors">
+            Test JavaScript
+        </button>
+        <div id="test-result" class="mt-4 text-green-400"></div>
+    </div>
+    
+    <script>
+        console.log('🚀 AIfluence test script loaded successfully!');
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('✅ DOM loaded');
+            
+            const testBtn = document.getElementById('test-btn');
+            const testResult = document.getElementById('test-result');
+            
+            if (testBtn && testResult) {
+                testBtn.addEventListener('click', function() {
+                    console.log('🎯 Button clicked!');
+                    testResult.textContent = '✅ JavaScript is working perfectly!';
+                });
+                console.log('📱 Button handler attached');
+            }
+        });
+    </script>
+</body>
+</html>

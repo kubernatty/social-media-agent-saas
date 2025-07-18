@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkedIn Authorization - AIfluence Auto-Callback</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background: rgba(30, 30, 30, 0.8);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            max-width: 500px;
+        }
+        .success {
+            color: #10B981;
+        }
+        .processing {
+            color: #3B82F6;
+        }
+        .error {
+            color: #EF4444;
+        }
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #3B82F6;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s ease-in-out infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔗 LinkedIn Authorization</h1>
+        <div id="status" class="processing">
+            <div class="spinner"></div>
+            <p>Automatically processing LinkedIn authorization...</p>
+            <p>Please wait while we complete the connection.</p>
+        </div>
+    </div>
+
+    <script>
+        console.log('🤖 Auto-callback page loaded');
+        
+        // Get URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const authCode = urlParams.get('code');
+        const state = urlParams.get('state');
+        const error = urlParams.get('error');
+        const errorDescription = urlParams.get('error_description');
+        
+        console.log('Auth code:', authCode);
+        console.log('State:', state);
+        console.log('Error:', error);
+        
+        const statusDiv = document.getElementById('status');
+        
+        if (error) {
+            console.log('❌ LinkedIn authorization error:', error, errorDescription);
+            statusDiv.className = 'error';
+            statusDiv.innerHTML = `
+                <h2>❌ Authorization Failed</h2>
+                <p><strong>Error:</strong> ${error}</p>
+                <p><strong>Description:</strong> ${errorDescription || 'Unknown error'}</p>
+                <p>Please close this window and try again.</p>
+            `;
+        } else if (authCode && state) {
+            console.log('✅ LinkedIn authorization successful - processing automatically');
+            
+            statusDiv.className = 'processing';
+            statusDiv.innerHTML = `
+                <div class="spinner"></div>
+                <h2>🤖 Processing Authorization</h2>
+                <p>Authorization code received successfully!</p>
+                <p>Automatically connecting to AIfluence...</p>
+            `;
+            
+            // AUTOMATIC: Try multiple methods to send code to parent
+            try {
+                // Method 1: Post message to opener window
+                if (window.opener && !window.opener.closed) {
+                    console.log('📤 Sending code to parent window via postMessage');
+                    window.opener.postMessage({
+                        type: 'linkedin-auth-success',
+                        code: authCode,
+                        state: state,
+                        source: 'linkedin-auto-callback'
+                    }, '*');
+                    
+                    // Also try direct function call if available
+                    if (window.opener.handleLinkedInCallback) {
+                        console.log('📞 Calling parent function directly');
+                        window.opener.handleLinkedInCallback(authCode);
+                    }
+                }
+                
+                // Method 2: Store in localStorage for parent to detect
+                console.log('💾 Storing code in localStorage');
+                localStorage.setItem('aifluence_linkedin_auth_code', authCode);
+                localStorage.setItem('aifluence_linkedin_auth_state', state);
+                localStorage.setItem('aifluence_linkedin_auth_timestamp', Date.now().toString());
+                
+                // Method 3: Try to focus parent window
+                if (window.opener) {
+                    window.opener.focus();
+                }
+                
+                // Show success and auto-close
+                setTimeout(() => {
+                    statusDiv.className = 'success';
+                    statusDiv.innerHTML = `
+                        <h2>✅ Connection Complete!</h2>
+                        <p>LinkedIn has been connected to AIfluence successfully!</p>
+                        <p>This window will close automatically...</p>
+                        <p><small>If the window doesn't close, you can close it manually.</small></p>
+                    `;
+                    
+                    // Auto-close after showing success
+                    setTimeout(() => {
+                        try {
+                            window.close();
+                        } catch (e) {
+                            console.log('Could not auto-close window:', e);
+                        }
+                    }, 3000);
+                }, 2000);
+                
+            } catch (e) {
+                console.error('Error processing authorization:', e);
+                statusDiv.className = 'error';
+                statusDiv.innerHTML = `
+                    <h2>⚠️ Processing Error</h2>
+                    <p>Authorization was successful, but there was an error connecting to AIfluence.</p>
+                    <p>Please manually copy this code:</p>
+                    <div style="background: #0f0f0f; padding: 10px; border-radius: 5px; margin: 10px 0; word-break: break-all; font-family: monospace;">${authCode}</div>
+                    <p>And paste it in AIfluence.</p>
+                `;
+            }
+            
+        } else {
+            console.log('❌ No authorization code received');
+            statusDiv.className = 'error';
+            statusDiv.innerHTML = `
+                <h2>❌ No Authorization Code</h2>
+                <p>The LinkedIn authorization process didn't complete properly.</p>
+                <p>Please close this window and try again.</p>
+            `;
+        }
+    </script>
+</body>
+</html>

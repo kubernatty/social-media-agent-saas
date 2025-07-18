@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LinkedIn OAuth Callback</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            background: #1a1a1a; 
+            color: white; 
+            text-align: center; 
+            padding: 50px; 
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: #2a2a2a;
+            padding: 30px;
+            border-radius: 10px;
+        }
+        .success { color: #10B981; }
+        .error { color: #EF4444; }
+        .code-box {
+            background: #0f0f0f;
+            border: 1px solid #444;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+            font-family: monospace;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔗 LinkedIn OAuth Callback</h1>
+        <div id="status">Processing...</div>
+        <div id="instructions" style="display:none;">
+            <h3>✅ Authorization Code Received!</h3>
+            <p>Copy this authorization code:</p>
+            <div id="code-display" class="code-box"></div>
+            <p><strong>Instructions:</strong></p>
+            <ol style="text-align: left;">
+                <li>Copy the authorization code above</li>
+                <li>Go back to your AIfluence app</li>
+                <li>Open browser console (F12)</li>
+                <li>Run: <code>window.handleLinkedInCallback('YOUR_CODE_HERE')</code></li>
+            </ol>
+        </div>
+        <div id="error-display" style="display:none;" class="error">
+            <h3>❌ Authorization Failed</h3>
+            <p id="error-message"></p>
+        </div>
+    </div>
+
+    <script>
+        // Get URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+        const error = urlParams.get('error');
+        const errorDesc = urlParams.get('error_description');
+        const state = urlParams.get('state');
+
+        console.log('Callback received:', { code, error, errorDesc, state });
+
+        if (error) {
+            document.getElementById('status').style.display = 'none';
+            document.getElementById('error-display').style.display = 'block';
+            document.getElementById('error-message').textContent = `${error}: ${errorDesc || 'Unknown error'}`;
+        } else if (code) {
+            document.getElementById('status').style.display = 'none';
+            document.getElementById('instructions').style.display = 'block';
+            document.getElementById('code-display').textContent = code;
+            
+            // Try to post message to parent window if opened in popup
+            if (window.opener) {
+                try {
+                    window.opener.postMessage({
+                        type: 'linkedin-auth-success',
+                        code: code,
+                        state: state
+                    }, '*');
+                    // Auto close after 3 seconds
+                    setTimeout(() => window.close(), 3000);
+                } catch (e) {
+                    console.log('Could not post to parent window:', e);
+                }
+            }
+        } else {
+            document.getElementById('status').innerHTML = '<span class="error">No authorization code received</span>';
+        }
+    </script>
+</body>
+</html>

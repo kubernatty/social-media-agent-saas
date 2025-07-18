@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIfluence LinkedIn Auto-Processor</title>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        .container {
+            text-align: center;
+            background: rgba(30, 30, 30, 0.9);
+            padding: 3rem;
+            border-radius: 20px;
+            border: 2px solid rgba(59, 130, 246, 0.5);
+            max-width: 600px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+        }
+        .automation-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+        .status {
+            font-size: 1.2rem;
+            margin: 1rem 0;
+            padding: 1rem;
+            border-radius: 10px;
+            border: 1px solid;
+        }
+        .processing {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.3);
+            color: #60A5FA;
+        }
+        .success {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: rgba(16, 185, 129, 0.3);
+            color: #34D399;
+        }
+        .error {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.3);
+            color: #F87171;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3B82F6, #10B981);
+            border-radius: 3px;
+            animation: progress 3s ease-in-out;
+        }
+        @keyframes progress {
+            from { width: 0%; }
+            to { width: 100%; }
+        }
+        .communication-methods {
+            text-align: left;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        .method {
+            display: flex;
+            align-items: center;
+            margin: 0.5rem 0;
+        }
+        .method-icon {
+            margin-right: 0.5rem;
+            font-size: 1.2rem;
+        }
+        .code-display {
+            background: rgba(15, 15, 15, 0.8);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            word-break: break-all;
+            color: #60A5FA;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="automation-icon">🤖</div>
+        <h1>LinkedIn Auto-Processor</h1>
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+        
+        <div id="status" class="status processing">
+            <div>🔄 Automatically processing LinkedIn authorization...</div>
+            <div style="font-size: 0.9rem; margin-top: 0.5rem;">No manual action required</div>
+        </div>
+
+        <div class="communication-methods">
+            <div class="method">
+                <span class="method-icon">📡</span>
+                <span id="method-postmessage">PostMessage Communication: Standby</span>
+            </div>
+            <div class="method">
+                <span class="method-icon">💾</span>
+                <span id="method-localstorage">LocalStorage Bridge: Standby</span>
+            </div>
+            <div class="method">
+                <span class="method-icon">🎯</span>
+                <span id="method-direct">Direct Window Access: Standby</span>
+            </div>
+            <div class="method">
+                <span class="method-icon">🔔</span>
+                <span id="method-events">Custom Events: Standby</span>
+            </div>
+        </div>
+
+        <div id="code-section" style="display: none;">
+            <div>Authorization Code Extracted:</div>
+            <div id="code-display" class="code-display"></div>
+        </div>
+    </div>
+
+    <script>
+        console.log('🤖 ULTRA-AUTO LinkedIn Callback Processor Loaded');
+
+        // Extract URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const authCode = urlParams.get('code');
+        const state = urlParams.get('state');
+        const error = urlParams.get('error');
+        const errorDescription = urlParams.get('error_description');
+
+        console.log('📋 Callback Data:', { authCode, state, error, errorDescription });
+
+        const statusDiv = document.getElementById('status');
+        
+        // Update method status
+        function updateMethodStatus(methodId, status, message) {
+            const element = document.getElementById(methodId);
+            const icon = status === 'success' ? '✅' : status === 'error' ? '❌' : '⏳';
+            element.textContent = `${message}`;
+            element.style.color = status === 'success' ? '#34D399' : status === 'error' ? '#F87171' : '#60A5FA';
+        }
+
+        if (error) {
+            console.log('❌ LinkedIn OAuth Error:', error, errorDescription);
+            statusDiv.className = 'status error';
+            statusDiv.innerHTML = `
+                <div>❌ LinkedIn Authorization Failed</div>
+                <div style="font-size: 0.9rem; margin-top: 0.5rem;">${error}: ${errorDescription || 'Unknown error'}</div>
+            `;
+        } else if (authCode && state) {
+            console.log('✅ Authorization successful - starting ULTRA-AUTO processing');
+            
+            // Show the extracted code
+            document.getElementById('code-section').style.display = 'block';
+            document.getElementById('code-display').textContent = authCode;
+
+            // ULTRA-AUTOMATED PROCESSING
+            let communicationSuccess = false;
+            
+            setTimeout(() => {
+                console.log('🚀 Starting multi-method communication...');
+
+                // METHOD 1: PostMessage to Parent Window
+                try {
+                    updateMethodStatus('method-postmessage', 'processing', 'PostMessage Communication: Sending...');
+                    
+                    if (window.opener && !window.opener.closed) {
+                        console.log('📤 Sending postMessage to parent window');
+                        window.opener.postMessage({
+                            type: 'AIFLUENCE_LINKEDIN_AUTH_SUCCESS',
+                            source: 'ultra-auto-callback',
+                            code: authCode,
+                            state: state,
+                            timestamp: Date.now()
+                        }, '*');
+
+                        // Try direct function call if available
+                        if (window.opener.handleLinkedInCallback) {
+                            console.log('📞 Calling parent handleLinkedInCallback directly');
+                            window.opener.handleLinkedInCallback(authCode);
+                        }
+
+                        // Try alternative function names
+                        if (window.opener.processLinkedInAuth) {
+                            window.opener.processLinkedInAuth(authCode);
+                        }
+
+                        updateMethodStatus('method-postmessage', 'success', 'PostMessage Communication: Sent successfully');
+                        communicationSuccess = true;
+                    } else {
+                        updateMethodStatus('method-postmessage', 'error', 'PostMessage Communication: No parent window');
+                    }
+                } catch (e) {
+                    console.error('PostMessage error:', e);
+                    updateMethodStatus('method-postmessage', 'error', 'PostMessage Communication: Failed');
+                }
+
+                // METHOD 2: LocalStorage Bridge
+                try {
+                    updateMethodStatus('method-localstorage', 'processing', 'LocalStorage Bridge: Writing data...');
+                    
+                    localStorage.setItem('aifluence_linkedin_auth_code', authCode);
+                    localStorage.setItem('aifluence_linkedin_auth_state', state);
+                    localStorage.setItem('aifluence_linkedin_auth_timestamp', Date.now().toString());
+                    localStorage.setItem('aifluence_linkedin_auth_source', 'ultra-auto-callback');
+                    
+                    // Trigger storage event
+                    window.dispatchEvent(new StorageEvent('storage', {
+                        key: 'aifluence_linkedin_auth_code',
+                        newValue: authCode,
+                        url: window.location.href
+                    }));
+
+                    updateMethodStatus('method-localstorage', 'success', 'LocalStorage Bridge: Data stored');
+                    communicationSuccess = true;
+                } catch (e) {
+                    console.error('LocalStorage error:', e);
+                    updateMethodStatus('method-localstorage', 'error', 'LocalStorage Bridge: Failed');
+                }
+
+                // METHOD 3: Direct Window Access
+                try {
+                    updateMethodStatus('method-direct', 'processing', 'Direct Window Access: Attempting...');
+                    
+                    // Try to access all windows
+                    if (window.parent && window.parent !== window) {
+                        window.parent.postMessage({
+                            type: 'AIFLUENCE_LINKEDIN_AUTH_SUCCESS',
+                            code: authCode,
+                            state: state
+                        }, '*');
+                    }
+
+                    // Try to access top window
+                    if (window.top && window.top !== window) {
+                        window.top.postMessage({
+                            type: 'AIFLUENCE_LINKEDIN_AUTH_SUCCESS',
+                            code: authCode,
+                            state: state
+                        }, '*');
+                    }
+
+                    updateMethodStatus('method-direct', 'success', 'Direct Window Access: Messages sent');
+                } catch (e) {
+                    console.error('Direct window access error:', e);
+                    updateMethodStatus('method-direct', 'error', 'Direct Window Access: Failed');
+                }
+
+                // METHOD 4: Custom Events
+                try {
+                    updateMethodStatus('method-events', 'processing', 'Custom Events: Broadcasting...');
+                    
+                    // Dispatch custom events
+                    window.dispatchEvent(new CustomEvent('aifluenceLinkedInAuth', {
+                        detail: { code: authCode, state: state }
+                    }));
+
+                    // Also try on document
+                    document.dispatchEvent(new CustomEvent('aifluenceLinkedInAuth', {
+                        detail: { code: authCode, state: state }
+                    }));
+
+                    updateMethodStatus('method-events', 'success', 'Custom Events: Broadcasted');
+                } catch (e) {
+                    console.error('Custom events error:', e);
+                    updateMethodStatus('method-events', 'error', 'Custom Events: Failed');
+                }
+
+                // Update status to success
+                setTimeout(() => {
+                    statusDiv.className = 'status success';
+                    statusDiv.innerHTML = `
+                        <div>✅ LinkedIn Connected Successfully!</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem;">Authorization code automatically processed</div>
+                    `;
+
+                    // Auto-close after showing success
+                    setTimeout(() => {
+                        try {
+                            console.log('🔚 Auto-closing callback window...');
+                            window.close();
+                        } catch (e) {
+                            console.log('Could not auto-close:', e);
+                            statusDiv.innerHTML += '<div style="font-size: 0.8rem; margin-top: 1rem; opacity: 0.7;">You can close this window now</div>';
+                        }
+                    }, 3000);
+                }, 2000);
+
+            }, 1000);
+
+        } else {
+            console.log('❌ No authorization data received');
+            statusDiv.className = 'status error';
+            statusDiv.innerHTML = `
+                <div>❌ No Authorization Data</div>
+                <div style="font-size: 0.9rem; margin-top: 0.5rem;">LinkedIn callback incomplete</div>
+            `;
+        }
+
+        // Listen for visibility change to ensure we process when page becomes visible
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden && authCode) {
+                console.log('🔄 Page became visible, ensuring processing...');
+            }
+        });
+
+        console.log('🤖 Ultra-Auto Callback Processor Ready');
+    </script>
+</body>
+</html>
