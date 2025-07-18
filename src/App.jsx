@@ -1,20 +1,69 @@
-import React, { useState } from 'react';
-import { Brain, Target, Users, Lightbulb, TrendingUp, Calendar, Share2 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Brain, Target, Users, Lightbulb, TrendingUp, Calendar, Share2, Settings as SettingsIcon, LogOut } from 'lucide-react';
 import ContentGenerator from './components/ContentGenerator';
 import LinkedInConnector from './components/LinkedInConnector';
 import ContentScheduler from './components/ContentScheduler';
 import Dashboard from './components/Dashboard';
+import AuthPage from './components/AuthPage';
+import Settings from './components/Settings';
+import { authService } from './services/authService';
 
 function App() {
   const [activeTab, setActiveTab] = useState('generator');
   const [isLinkedInConnected, setIsLinkedInConnected] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Check if user is already authenticated
+    const checkAuth = () => {
+      const currentUser = authService.getCurrentUser();
+      if (currentUser && authService.isAuthenticated()) {
+        setIsAuthenticated(true);
+        setUser(currentUser);
+      }
+      setLoading(false);
+    };
+
+    checkAuth();
+  }, []);
+
+  const handleAuthSuccess = () => {
+    const currentUser = authService.getCurrentUser();
+    setUser(currentUser);
+    setIsAuthenticated(true);
+  };
+
+  const handleLogout = () => {
+    authService.logout();
+    setIsAuthenticated(false);
+    setUser(null);
+    setActiveTab('generator');
+  };
 
   const tabs = [
     { id: 'generator', label: 'Content Generator', icon: Brain },
     { id: 'linkedin', label: 'LinkedIn Connect', icon: Share2 },
     { id: 'scheduler', label: 'Scheduler', icon: Calendar },
-    { id: 'dashboard', label: 'Analytics', icon: TrendingUp }
+    { id: 'dashboard', label: 'Analytics', icon: TrendingUp },
+    { id: 'settings', label: 'Settings', icon: SettingsIcon }
   ];
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500 mx-auto"></div>
+          <p className="text-slate-400 mt-4">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return <AuthPage onAuthSuccess={handleAuthSuccess} />;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
@@ -33,9 +82,18 @@ function App() {
                 <p className="text-sm text-slate-400">Social Media Agent</p>
               </div>
             </div>
-            <div className="text-right">
-              <p className="text-sm text-slate-300">Bridging Business & AI</p>
-              <p className="text-xs text-slate-500">Educational Content Generator</p>
+            <div className="flex items-center space-x-4">
+              <div className="text-right">
+                <p className="text-sm text-slate-300">Welcome, {user?.name}</p>
+                <p className="text-xs text-slate-500">{user?.plan || 'Free'} Plan</p>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="flex items-center space-x-2 px-3 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
+              >
+                <LogOut className="h-4 w-4" />
+                <span className="hidden sm:inline">Logout</span>
+              </button>
             </div>
           </div>
         </div>
@@ -79,6 +137,7 @@ function App() {
           <ContentScheduler isLinkedInConnected={isLinkedInConnected} />
         )}
         {activeTab === 'dashboard' && <Dashboard />}
+        {activeTab === 'settings' && <Settings user={user} onLogout={handleLogout} />}
       </main>
 
       {/* Theme Context Box */}
