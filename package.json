@@ -1,0 +1,28 @@
+{
+  "name": "aifluence-backend",
+  "version": "1.0.0",
+  "description": "Backend API for AIfluence social media intelligence platform",
+  "main": "api/users.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'No build required for serverless functions'",
+    "deploy": "vercel --prod"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.3",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "vercel": "^33.0.0"
+  },
+  "keywords": [
+    "ai",
+    "social-media",
+    "linkedin",
+    "content-generation",
+    "api"
+  ],
+  "author": "AIfluence",
+  "license": "MIT"
+}
