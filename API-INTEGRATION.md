@@ -2,7 +2,267 @@
 
 ## Overview
 
-The Social Media Agent integrates with multiple AI services to provide comprehensive content generation and image creation capabilities. This document provides detailed information on each integration, setup requirements, and troubleshooting procedures.
+The AIfluence Social Media Intelligence Platform integrates with multiple AI services and provides a secure backend API for user data management. This document provides detailed information on each integration, setup requirements, and troubleshooting procedures.
+
+## Backend API Integration
+
+### Secure User Data Management
+
+The platform now includes a secure backend API that replaces insecure localStorage with encrypted database storage.
+
+### User Management API (`/api/users.js`)
+
+All user management endpoints use query parameters to specify the action.
+
+#### Authentication Endpoints
+
+**Register New User**
+```javascript
+POST /api/users?action=register
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "securepassword",
+  "name": "John Doe"
+}
+
+Response:
+{
+  "success": true,
+  "user": {
+    "id": "uuid",
+    "email": "user@example.com",
+    "name": "John Doe",
+    "plan": "free"
+  },
+  "token": "jwt-token"
+}
+```
+
+**User Login**
+```javascript
+POST /api/users?action=login
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "securepassword"
+}
+
+Response:
+{
+  "success": true,
+  "user": {
+    "id": "uuid",
+    "email": "user@example.com",
+    "name": "John Doe",
+    "plan": "free",
+    "linkedInConnected": false,
+    "posts": [],
+    "usage": {
+      "postsGenerated": 0,
+      "imagesGenerated": 0,
+      "monthlyLimit": 10
+    }
+  },
+  "token": "jwt-token"
+}
+```
+
+**Get Current User**
+```javascript
+GET /api/users?action=get-user
+Authorization: Bearer jwt-token
+
+Response:
+{
+  "success": true,
+  "user": {
+    "id": "uuid",
+    "email": "user@example.com",
+    "name": "John Doe",
+    "plan": "free",
+    "linkedInConnected": false,
+    "posts": [],
+    "usage": {...}
+  }
+}
+```
+
+#### LinkedIn Integration Endpoints
+
+**Save LinkedIn Connection**
+```javascript
+POST /api/users?action=save-linkedin-connection
+Authorization: Bearer jwt-token
+Content-Type: application/json
+
+{
+  "profile": {
+    "id": "linkedin-id",
+    "name": "John Doe",
+    "email": "john@example.com"
+  },
+  "authCode": "linkedin-auth-code"
+}
+```
+
+**Get LinkedIn Connection Status**
+```javascript
+GET /api/users?action=get-linkedin-connection
+Authorization: Bearer jwt-token
+
+Response:
+{
+  "success": true,
+  "connected": true,
+  "profile": {...},
+  "connectedAt": "2024-01-15T10:30:00Z"
+}
+```
+
+**Disconnect LinkedIn**
+```javascript
+POST /api/users?action=disconnect-linkedin
+Authorization: Bearer jwt-token
+```
+
+#### Posts Management Endpoints
+
+**Save User Posts**
+```javascript
+POST /api/users?action=save-posts
+Authorization: Bearer jwt-token
+Content-Type: application/json
+
+{
+  "posts": [
+    {
+      "id": "post-id",
+      "content": "Post content",
+      "topic": "AI",
+      "audience": "Business Leaders",
+      "scheduledAt": "2024-01-15T14:00:00Z"
+    }
+  ]
+}
+```
+
+**Get User Posts**
+```javascript
+GET /api/users?action=get-posts
+Authorization: Bearer jwt-token
+
+Response:
+{
+  "success": true,
+  "posts": [...]
+}
+```
+
+#### Usage Tracking Endpoints
+
+**Save Usage Data**
+```javascript
+POST /api/users?action=save-usage
+Authorization: Bearer jwt-token
+Content-Type: application/json
+
+{
+  "usage": {
+    "postsGenerated": 5,
+    "imagesGenerated": 2,
+    "monthlyLimit": 10,
+    "resetDate": "2024-02-01T00:00:00Z"
+  }
+}
+```
+
+**Get Usage Data**
+```javascript
+GET /api/users?action=get-usage
+Authorization: Bearer jwt-token
+
+Response:
+{
+  "success": true,
+  "usage": {
+    "postsGenerated": 5,
+    "imagesGenerated": 2,
+    "monthlyLimit": 10,
+    "resetDate": "2024-02-01T00:00:00Z"
+  }
+}
+```
+
+### OpenAI Image Generation API (`/api/openai/images.js`)
+
+**Generate Image**
+```javascript
+POST /api/openai/images
+Content-Type: application/json
+
+{
+  "prompt": "Professional business infographic about AI adoption",
+  "apiKey": "sk-..."
+}
+
+Response:
+{
+  "data": [
+    {
+      "url": "https://oaidalleapiprodscus.blob.core.windows.net/..."
+    }
+  ]
+}
+```
+
+### Security Features
+
+**Authentication & Authorization**
+- JWT tokens with 30-day expiry
+- bcrypt password hashing
+- Row Level Security (RLS) in database
+- API key encryption
+
+**Data Protection**
+- CORS configuration for AIfluence app
+- Input validation and sanitization
+- SQL injection prevention
+- XSS protection
+
+**Privacy**
+- User data isolation
+- Encrypted API key storage
+- Secure token storage
+- GDPR compliance ready
+
+### Easy Integration with Existing AIfluence App
+
+A JavaScript integration layer (`secure-storage.js`) provides a drop-in replacement for localStorage:
+
+```javascript
+// Initialize secure storage
+window.secureStorage = new SecureStorage();
+
+// Register user
+const user = await secureStorage.register(email, password, name);
+
+// Login
+const user = await secureStorage.login(email, password);
+
+// Save LinkedIn connection
+await secureStorage.saveLinkedInConnection(profile, authCode);
+
+// Save posts
+await secureStorage.savePosts(posts);
+
+// Save usage data
+await secureStorage.saveUsage(usage);
+```
+
+## External AI Services
 
 ## Supported AI Services
 

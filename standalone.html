@@ -232,6 +232,87 @@
             animation-delay: 3s;
         }
     </style>
+    
+    <!-- Global Logout Functions - Available immediately -->
+    <script>
+        // Define logout functions in global scope immediately
+        window.handleLogout = function() {
+            console.log('🔄 handleLogout function called');
+            if (confirm('Are you sure you want to sign out?')) {
+                console.log('✅ User confirmed logout');
+                
+                // Clear all session-related data (but keep LinkedIn connection)
+                localStorage.removeItem('socialMediaAgent_currentUserId');
+                localStorage.removeItem('socialMediaAgent_persistentLogin');
+                localStorage.removeItem('socialMediaAgent_currentSession');
+                console.log('💾 Cleared session data (LinkedIn connection preserved)');
+                
+                // Hide user header
+                const userHeader = document.getElementById('user-header');
+                if (userHeader) {
+                    userHeader.classList.add('hidden');
+                    console.log('✅ User header hidden');
+                }
+                
+                // Show auth modal
+                const authModal = document.getElementById('auth-modal');
+                if (authModal) {
+                    authModal.classList.remove('hidden');
+                    console.log('✅ Auth modal shown');
+                }
+                
+                // Reset user header to default values
+                const userNameEl = document.getElementById('user-name');
+                const userEmailEl = document.getElementById('user-email');
+                const userAvatarEl = document.getElementById('user-avatar');
+                
+                if (userNameEl) userNameEl.textContent = 'User';
+                if (userEmailEl) userEmailEl.textContent = 'user@example.com';
+                if (userAvatarEl) userAvatarEl.textContent = 'U';
+                
+                // Switch back to login form
+                const registerForm = document.getElementById('register-form');
+                const loginForm = document.getElementById('login-form');
+                if (registerForm) registerForm.classList.add('hidden');
+                if (loginForm) loginForm.classList.remove('hidden');
+                
+                // Switch to generator tab (away from settings)
+                if (typeof showTab === 'function') {
+                    showTab('generator');
+                    console.log('✅ Switched to generator tab');
+                }
+                
+                // Clear global variables if they exist
+                if (typeof currentUser !== 'undefined') {
+                    currentUser = null;
+                }
+                if (typeof isLoggedIn !== 'undefined') {
+                    isLoggedIn = false;
+                }
+                
+                console.log('✅ Logout completed successfully');
+                
+                // Show success message
+                setTimeout(() => {
+                    if (typeof showToast === 'function') {
+                        showToast('You have been signed out successfully', 'success');
+                    } else {
+                        alert('You have been signed out successfully');
+                    }
+                }, 100);
+            } else {
+                console.log('❌ User cancelled logout');
+            }
+        };
+        
+        // Fallback logout function
+        window.logout = function() {
+            console.log('🔄 logout function called (redirecting to handleLogout)');
+            window.handleLogout();
+        };
+        
+        console.log('✅ Global logout functions loaded');
+    </script>
 </head>
 <body class="bg-hootsuite-darker min-h-screen relative">
     
@@ -431,31 +512,36 @@
                     
                     if (connectedDiv && disconnectedDiv) {
                         // Check if LinkedIn is connected using our centralized function
-                        if (typeof window.isLinkedInConnected === 'function') {
-                            const isConnected = typeof window.isLinkedInConnected === 'function' ? window.isLinkedInConnected() : false;
-                            console.log('🔗 LinkedIn status:', isConnected);
-                            
-                            if (isConnected) {
-                                console.log('✅ Showing connected state');
-                                connectedDiv.classList.remove('hidden');
-                                disconnectedDiv.classList.add('hidden');
+                        setTimeout(() => {
+                            if (typeof window.isLinkedInConnected === 'function') {
+                                const isConnected = window.isLinkedInConnected();
+                                console.log('🔗 LinkedIn status:', isConnected);
                                 
-                                // Update profile name if available
-                                if (profileName && typeof window.getLinkedInConnectionInfo === 'function') {
-                                    const connectionInfo = window.getLinkedInConnectionInfo();
-                                    if (connectionInfo.profile) {
-                                        profileName.textContent = connectionInfo.profile;
-                                        console.log('✅ Profile name updated:', connectionInfo.profile);
+                                if (isConnected) {
+                                    console.log('✅ Showing connected state');
+                                    connectedDiv.classList.remove('hidden');
+                                    disconnectedDiv.classList.add('hidden');
+                                    
+                                    // Update profile name if available
+                                    if (profileName && typeof window.getLinkedInConnectionInfo === 'function') {
+                                        const connectionInfo = window.getLinkedInConnectionInfo();
+                                        if (connectionInfo.profile) {
+                                            profileName.textContent = connectionInfo.profile;
+                                            console.log('✅ Profile name updated:', connectionInfo.profile);
+                                        }
                                     }
+                                } else {
+                                    console.log('❌ Showing disconnected state');
+                                    connectedDiv.classList.add('hidden');
+                                    disconnectedDiv.classList.remove('hidden');
                                 }
                             } else {
-                                console.log('❌ Showing disconnected state');
+                                console.log('⏳ LinkedIn connection function not yet available, showing disconnected state');
+                                // Default to disconnected state
                                 connectedDiv.classList.add('hidden');
                                 disconnectedDiv.classList.remove('hidden');
                             }
-                        } else {
-                            console.error('❌ isLinkedInConnected function not available');
-                        }
+                        }, 500); // Wait 500ms for functions to be defined
                     } else {
                         console.error('❌ DOM elements not found');
                     }
@@ -1017,6 +1103,8 @@
                             }
                         }
                     };
+                    
+                    // Logout functions are now defined in global scope at the top of the document
                     
                     // Seamless LinkedIn OAuth - exactly like every major website
                     window.connectLinkedIn = function() {
@@ -1856,7 +1944,7 @@
                             
                             // Get current user (auto-login should be active)
                             const users = JSON.parse(localStorage.getItem('socialMediaAgent_users') || '[]');
-                            let currentUser = users.find(u => u.email === 'testtestmate@gmail.com');
+                            let currentUser = users.find(u => u.id === currentUserId);
                             
                             if (!currentUser) {
                                 // Get from connecting user if set
@@ -2204,71 +2292,83 @@
                         console.log('🔒 Security functions loaded: password hashing, CSRF protection');
                         console.log('🔒 Session management: secure sessions, input sanitization, expiration checks');
                         
-                        // IMMEDIATE AUTO-LOGIN for testtestmate@gmail.com
+                        // Clear any existing test user data
+                        const users = JSON.parse(localStorage.getItem('socialMediaAgent_users') || '[]');
+                        const filteredUsers = users.filter(u => u.email !== 'testtestmate@gmail.com');
+                        if (filteredUsers.length !== users.length) {
+                            localStorage.setItem('socialMediaAgent_users', JSON.stringify(filteredUsers));
+                            console.log('🧹 Cleared test user data');
+                        }
+                        
+                        // Clear test user session if it exists
+                        const currentUserId = localStorage.getItem('socialMediaAgent_currentUserId');
+                        if (currentUserId === 'test-user-123') {
+                            localStorage.removeItem('socialMediaAgent_persistentLogin');
+                            localStorage.removeItem('socialMediaAgent_currentUserId');
+                            console.log('🧹 Cleared test user session');
+                        }
+                        
+                        // Check for existing login session
                         setTimeout(function() {
-                            console.log('🚀 Immediate auto-login check...');
+                            console.log('🚀 Checking for existing login session...');
                             
-                            // Check if already logged in
-                            const userHeader = document.getElementById('user-header');
-                            const authModal = document.getElementById('auth-modal');
+                            // Check if user was previously logged in
+                            const persistentLogin = localStorage.getItem('socialMediaAgent_persistentLogin');
+                            const currentUserId = localStorage.getItem('socialMediaAgent_currentUserId');
                             
-                            if (userHeader && authModal) {
-                                // Force login the test user
-                                const users = JSON.parse(localStorage.getItem('socialMediaAgent_users') || '[]');
-                                let testUser = users.find(u => u.email === 'testtestmate@gmail.com');
-                                
-                                if (!testUser) {
-                                    // Create test user immediately
-                                    testUser = {
-                                        id: 'test-user-123',
-                                        name: 'Test User',
-                                        email: 'testtestmate@gmail.com',
-                                        password: 'password123',
-                                        plan: 'enterprise',
-                                        postsCount: 0,
-                                        imagesCount: 0,
-                                        linkedInConnected: false,
-                                        createdAt: new Date().toISOString(),
-                                        profile: {
-                                            name: 'Test User',
-                                            company: 'AIfluence Test Co',
-                                            title: 'Product Tester',
-                                            timezone: 'UTC-5'
-                                        }
-                                    };
-                                    users.push(testUser);
-                                    localStorage.setItem('socialMediaAgent_users', JSON.stringify(users));
-                                }
-                                
-                                // Set persistent login
-                                const loginData = {
-                                    userId: testUser.id,
-                                    loginTime: Date.now(),
-                                    persistent: true
-                                };
-                                localStorage.setItem('socialMediaAgent_persistentLogin', JSON.stringify(loginData));
-                                localStorage.setItem('socialMediaAgent_currentUserId', testUser.id);
-                                
-                                // Update UI
-                                document.getElementById('user-name').textContent = testUser.name;
-                                document.getElementById('user-email').textContent = testUser.email;
-                                document.getElementById('user-avatar').textContent = testUser.name.charAt(0).toUpperCase();
-                                authModal.classList.add('hidden');
-                                userHeader.classList.remove('hidden');
-                                
-                                // Initialize LinkedIn connection status
-                                setTimeout(() => {
-                                    if (typeof window.initializeLinkedInConnection === 'function') {
-                                        window.initializeLinkedInConnection();
+                            if (persistentLogin && currentUserId) {
+                                try {
+                                    const loginData = JSON.parse(persistentLogin);
+                                    
+                                    // Check if session has expired
+                                    if (loginData.expires && loginData.expires < Date.now()) {
+                                        console.log('⏰ Session expired, clearing data');
+                                        localStorage.removeItem('socialMediaAgent_persistentLogin');
+                                        localStorage.removeItem('socialMediaAgent_currentUserId');
+                                        return;
                                     }
                                     
-                                    // Check URL for OAuth callback
-                                    if (typeof window.checkUrlForAuthCode === 'function') {
-                                        window.checkUrlForAuthCode();
+                                    const users = JSON.parse(localStorage.getItem('socialMediaAgent_users') || '[]');
+                                    const user = users.find(u => u.id === currentUserId);
+                                    
+                                    if (user) {
+                                        // Restore user session
+                                        const userHeader = document.getElementById('user-header');
+                                        const authModal = document.getElementById('auth-modal');
+                                        
+                                        if (userHeader && authModal) {
+                                            document.getElementById('user-name').textContent = user.name;
+                                            document.getElementById('user-email').textContent = user.email;
+                                            document.getElementById('user-avatar').textContent = user.name.charAt(0).toUpperCase();
+                                            authModal.classList.add('hidden');
+                                            userHeader.classList.remove('hidden');
+                                            
+                                            // Initialize LinkedIn connection status
+                                            setTimeout(() => {
+                                                if (typeof window.initializeLinkedInConnection === 'function') {
+                                                    window.initializeLinkedInConnection();
+                                                }
+                                                
+                                                // Check URL for OAuth callback
+                                                if (typeof window.checkUrlForAuthCode === 'function') {
+                                                    window.checkUrlForAuthCode();
+                                                }
+                                            }, 500);
+                                            
+                                            console.log('✅ Restored session for user:', user.email, loginData.persistent ? '(persistent)' : '(session)');
+                                        }
+                                    } else {
+                                        console.log('❌ User not found, clearing persistent login');
+                                        localStorage.removeItem('socialMediaAgent_persistentLogin');
+                                        localStorage.removeItem('socialMediaAgent_currentUserId');
                                     }
-                                }, 500);
-                                
-                                console.log('✅ IMMEDIATE auto-login successful for:', testUser.email);
+                                } catch (error) {
+                                    console.error('❌ Error restoring session:', error);
+                                    localStorage.removeItem('socialMediaAgent_persistentLogin');
+                                    localStorage.removeItem('socialMediaAgent_currentUserId');
+                                }
+                            } else {
+                                console.log('ℹ️ No existing session found, showing login form');
                             }
                         }, 100); // Run after 100ms to ensure DOM elements exist
                         
@@ -3617,6 +3717,21 @@
                             </button>
                         </div>
                         
+                        <div class="flex items-center justify-between p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg">
+                            <div>
+                                <p class="text-blue-400 font-medium">Logout</p>
+                                <p class="text-sm text-slate-400">Sign out of your account</p>
+                            </div>
+                            <button onclick="window.handleLogout()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors">
+                                <div class="flex items-center space-x-2">
+                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                                    </svg>
+                                    <span>Logout</span>
+                                </div>
+                            </button>
+                        </div>
+                        
                         <div class="flex items-center justify-between p-4 bg-red-500/10 border border-red-500/30 rounded-lg">
                             <div>
                                 <p class="text-red-400 font-medium">Delete Account</p>
@@ -4019,20 +4134,24 @@
                                     currentUser = user;
                                     isLoggedIn = true;
                                     
+                                    // Always set the current user ID
+                                    localStorage.setItem('socialMediaAgent_currentUserId', user.id);
+                                    
                                     // Handle remember me option
                                     if (rememberMe) {
                                         // Set persistent login with longer expiration
                                         const loginData = {
                                             userId: user.id,
                                             loginTime: Date.now(),
-                                            persistent: true
+                                            persistent: true,
+                                            expires: Date.now() + (30 * 24 * 60 * 60 * 1000) // 30 days
                                         };
                                         localStorage.setItem('socialMediaAgent_persistentLogin', JSON.stringify(loginData));
-                                        console.log('💾 Persistent login saved');
+                                        console.log('💾 Persistent login saved for 30 days');
                                     } else {
-                                        // Regular session login
-                                        localStorage.setItem('socialMediaAgent_currentUserId', user.id);
+                                        // Regular session login - remove persistent login
                                         localStorage.removeItem('socialMediaAgent_persistentLogin');
+                                        console.log('💾 Regular session login (no persistence)');
                                     }
                                     
                                     // Update user header display
@@ -4649,120 +4768,68 @@
             showToast('Welcome to AIfluence Enterprise Demo! Full access to all features unlocked. 🚀', 'success', 5000);
         }
 
-        function handleLogout() {
-            console.log('🔄 handleLogout function called');
-            if (confirm('Are you sure you want to sign out?')) {
-                console.log('✅ User confirmed logout');
-                currentUser = null;
-                isLoggedIn = false;
-                localStorage.removeItem('socialMediaAgent_currentUserId');
-                localStorage.removeItem('socialMediaAgent_persistentLogin');
-                console.log('💾 Removed persistent login data');
-                
-                // Hide user header
-                const userHeader = document.getElementById('user-header');
-                if (userHeader) {
-                    userHeader.classList.add('hidden');
-                    console.log('✅ User header hidden');
-                } else {
-                    console.log('❌ User header not found');
-                }
-                
-                // Show auth modal
-                const authModal = document.getElementById('auth-modal');
-                if (authModal) {
-                    authModal.classList.remove('hidden');
-                    console.log('✅ Auth modal shown');
-                } else {
-                    console.log('❌ Auth modal not found');
-                }
-                
-                // Reset user header to default values
-                document.getElementById('user-name').textContent = 'User';
-                document.getElementById('user-email').textContent = 'user@example.com';
-                document.getElementById('user-avatar').textContent = 'U';
-                
-                // Switch back to login form
-                document.getElementById('register-form').classList.add('hidden');
-                document.getElementById('login-form').classList.remove('hidden');
-                
-                // Clear session data (but keep user accounts)
-                scheduledPosts = [];
-                updateSchedulerDisplay();
-                
-                console.log('✅ Logout completed successfully');
-                alert('You have been signed out successfully');
-            } else {
-                console.log('❌ User cancelled logout');
-            }
-        }
+        // Logout functions are now defined in global scope above
 
-        // Create or get the test user account
-        function ensureTestUser() {
+        // Get current user from session
+        function getCurrentUser() {
             const users = getUsers();
-            let testUser = users.find(u => u.email === 'testtestmate@gmail.com');
-            
-            if (!testUser) {
-                console.log('🔗 Creating test user account...');
-                testUser = {
-                    id: 'test-user-123',
-                    name: 'Test User',
-                    email: 'testtestmate@gmail.com',
-                    password: 'password123',
-                    plan: 'enterprise', // Give test user enterprise access
-                    postsCount: 0,
-                    imagesCount: 0,
-                    linkedInConnected: false,
-                    createdAt: new Date().toISOString(),
-                    profile: {
-                        name: 'Test User',
-                        company: 'AIfluence Test Co',
-                        title: 'Product Tester',
-                        timezone: 'UTC-5'
-                    }
-                };
-                
-                users.push(testUser);
-                saveUsers(users);
-                console.log('✅ Test user created');
-            }
-            
-            return testUser;
+            const currentUserId = localStorage.getItem('socialMediaAgent_currentUserId');
+            return users.find(u => u.id === currentUserId);
         }
         
         // Check for existing session on page load
         function initializeAuth() {
             console.log('🔍 Checking for existing user session...');
             
-            // Ensure test user exists
-            const testUser = ensureTestUser();
+            // Check for persistent login
+            const persistentLogin = localStorage.getItem('socialMediaAgent_persistentLogin');
+            const currentUserId = localStorage.getItem('socialMediaAgent_currentUserId');
             
-            // Auto-login the test user with persistent login
-            console.log('🔗 Auto-logging in test user...');
-            currentUser = testUser;
-            isLoggedIn = true;
-            
-            // Set persistent login
-            const loginData = {
-                userId: testUser.id,
-                loginTime: Date.now(),
-                persistent: true
-            };
-            localStorage.setItem('socialMediaAgent_persistentLogin', JSON.stringify(loginData));
-            localStorage.setItem('socialMediaAgent_currentUserId', testUser.id);
-            
-            console.log('✅ Auto-logged in as:', testUser.email);
-            
-            // Update UI immediately
-            document.getElementById('user-name').textContent = testUser.name;
-            document.getElementById('user-email').textContent = testUser.email;
-            document.getElementById('user-avatar').textContent = testUser.name.charAt(0).toUpperCase();
-            document.getElementById('auth-modal').classList.add('hidden');
-            document.getElementById('user-header').classList.remove('hidden');
-            
-            // Load settings data
-            if (typeof loadSettingsData === 'function') {
-                loadSettingsData();
+            if (persistentLogin && currentUserId) {
+                try {
+                    const loginData = JSON.parse(persistentLogin);
+                    
+                    // Check if session has expired
+                    if (loginData.expires && loginData.expires < Date.now()) {
+                        console.log('⏰ Session expired, clearing data');
+                        localStorage.removeItem('socialMediaAgent_persistentLogin');
+                        localStorage.removeItem('socialMediaAgent_currentUserId');
+                        return;
+                    }
+                    
+                    const users = getUsers();
+                    const user = users.find(u => u.id === currentUserId);
+                    
+                    if (user) {
+                        // Restore user session
+                        currentUser = user;
+                        isLoggedIn = true;
+                        
+                        // Update UI
+                        document.getElementById('user-name').textContent = user.name;
+                        document.getElementById('user-email').textContent = user.email;
+                        document.getElementById('user-avatar').textContent = user.name.charAt(0).toUpperCase();
+                        document.getElementById('auth-modal').classList.add('hidden');
+                        document.getElementById('user-header').classList.remove('hidden');
+                        
+                        // Load settings data
+                        if (typeof loadSettingsData === 'function') {
+                            loadSettingsData();
+                        }
+                        
+                        console.log('✅ Restored session for user:', user.email, loginData.persistent ? '(persistent)' : '(session)');
+                    } else {
+                        console.log('❌ User not found, clearing session');
+                        localStorage.removeItem('socialMediaAgent_persistentLogin');
+                        localStorage.removeItem('socialMediaAgent_currentUserId');
+                    }
+                } catch (error) {
+                    console.error('❌ Error restoring session:', error);
+                    localStorage.removeItem('socialMediaAgent_persistentLogin');
+                    localStorage.removeItem('socialMediaAgent_currentUserId');
+                }
+            } else {
+                console.log('ℹ️ No existing session found');
             }
         }
 

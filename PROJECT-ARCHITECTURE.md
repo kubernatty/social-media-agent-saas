@@ -2,15 +2,15 @@
 
 ## 🏗️ Architecture Overview
 
-### Current Architecture: Supabase + Vercel Stack
+### Current Architecture: AIfluence SaaS Platform
 
 We've transformed a localStorage-based demo into a production-ready SaaS platform using a modern, cost-effective architecture.
 
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │   Frontend      │    │   Backend       │    │   Database      │
-│   React + Vite  │◄──►│   Node.js API   │◄──►│   Supabase      │
-│   (Vercel)      │    │   (Vercel)      │    │   PostgreSQL    │
+│   AIfluence     │◄──►│   Secure API    │◄──►│   Supabase      │
+│   (HTML/JS)     │    │   (Vercel)      │    │   PostgreSQL    │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
         │                       │                       │
         │                       │                       │
@@ -26,8 +26,8 @@ We've transformed a localStorage-based demo into a production-ready SaaS platfor
 
 ### Why We Chose This Stack
 
-**Problem**: Original app used localStorage (browser-only storage)
-**Solution**: Cloud-first SaaS architecture with real database
+**Problem**: Original AIfluence app used localStorage (insecure, browser-only storage)
+**Solution**: Cloud-first SaaS architecture with encrypted database storage
 
 **Decision Matrix:**
 
@@ -44,7 +44,91 @@ We've transformed a localStorage-based demo into a production-ready SaaS platfor
 
 ## 🔧 Technical Architecture
 
-### Frontend Layer (React + Vite)
+### Frontend Layer (AIfluence HTML/JS)
+```
+AIfluence Application (standalone.html)
+├── Content Generation System
+│   ├── Local AI (Ollama) Integration
+│   ├── Claude API Backup
+│   └── OpenAI Image Generation
+├── LinkedIn Integration
+│   ├── OAuth2 Flow
+│   ├── Profile Management
+│   └── Post Publishing
+├── Scheduling System
+│   ├── Calendar Interface
+│   ├── Drag & Drop
+│   └── Auto-posting
+└── User Interface
+    ├── Dark Theme
+    ├── Real-time Updates
+    └── Mobile Responsive
+```
+
+### Backend Layer (Secure API)
+```
+/api/
+├── users.js                 # User management API
+│   ├── register            # User registration with bcrypt
+│   ├── login               # JWT authentication
+│   ├── get-user           # Retrieve user profile
+│   ├── update-user        # Update user information
+│   ├── save-linkedin-connection  # Store LinkedIn data
+│   ├── get-linkedin-connection   # Retrieve LinkedIn status
+│   ├── disconnect-linkedin      # Remove LinkedIn connection
+│   ├── save-posts         # Store user posts
+│   ├── get-posts          # Retrieve user posts
+│   ├── save-usage         # Track usage metrics
+│   └── get-usage          # Retrieve usage data
+└── openai/
+    └── images.js           # OpenAI DALL-E proxy
+```
+
+### Database Layer (Supabase PostgreSQL)
+```
+Tables:
+├── aifluence_users          # Main user table
+│   ├── id (UUID)           # Primary key
+│   ├── email/password      # Authentication
+│   ├── name, plan          # User profile
+│   ├── linkedin_*          # LinkedIn integration
+│   ├── posts (JSONB)       # User posts array
+│   ├── usage (JSONB)       # Usage tracking
+│   ├── preferences (JSONB) # User settings
+│   └── *_api_key_encrypted # Encrypted API keys
+├── aifluence_posts         # Individual posts
+│   ├── user_id (FK)        # Reference to user
+│   ├── content, topic      # Post details
+│   ├── scheduled_at        # Scheduling
+│   └── linkedin_post_id    # External references
+└── aifluence_analytics     # Usage analytics
+    ├── user_id (FK)        # Reference to user
+    ├── event_type          # Type of event
+    └── date, count         # Metrics
+```
+
+### Security Features
+```
+Authentication:
+├── JWT Tokens (30-day expiry)
+├── bcrypt Password Hashing
+├── Row Level Security (RLS)
+└── API Key Encryption
+
+Data Protection:
+├── CORS Configuration
+├── Input Validation
+├── SQL Injection Prevention
+└── XSS Protection
+
+Privacy:
+├── User Data Isolation
+├── Encrypted API Keys
+├── Secure Token Storage
+└── GDPR Compliance Ready
+```
+
+### Legacy Frontend Layer (React + Vite) - Deprecated
 ```
 src/
 ├── components/
