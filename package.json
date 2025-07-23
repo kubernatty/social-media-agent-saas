@@ -4,7 +4,10 @@
   "description": "Backend API for AIfluence social media intelligence platform",
   "main": "api/users.js",
   "scripts": {
-    "dev": "vercel dev",
+    "dev": "node dev-server.js",
+    "dev:backend": "cd server && node server.js",
+    "dev:frontend": "python3 -m http.server 8080",
+    "dev:vercel": "vercel dev",
     "build": "echo 'No build required for serverless functions'",
     "deploy": "vercel --prod"
   },
