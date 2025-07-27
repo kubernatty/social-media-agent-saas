@@ -33,6 +33,32 @@ We've built a modern, scalable SaaS architecture using:
 - **Global CDN** - Worldwide performance
 - **99.9% uptime** - Production SLA
 
+## 🚀 Development Setup
+
+### Prerequisites
+- Node.js 18+ 
+- npm
+
+### Quick Start
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Access the application
+open http://localhost:3000
+```
+
+### Build for Production
+```bash
+npm run build
+npm run preview
+```
+
+**⚠️ IMPORTANT**: This project uses React + Vite. Always use `npm run dev` to start the development server. The `/archive` folder contains deprecated code and should NOT be used.
+
 ## 🚀 Features
 
 ### ✅ Working Features (Production Ready)

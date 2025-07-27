@@ -6817,8 +6817,11 @@ Which myth has your organization encountered?
                 btn.classList.remove('bg-blue-500/20', 'border-blue-500/30', 'text-blue-400');
                 btn.classList.add('bg-slate-700/50', 'border-slate-600', 'text-slate-300');
             });
-            document.querySelector(`[data-topic="${topic}"]`).classList.remove('bg-slate-700/50', 'border-slate-600', 'text-slate-300');
-            document.querySelector(`[data-topic="${topic}"]`).classList.add('bg-blue-500/20', 'border-blue-500/30', 'text-blue-400');
+            const topicElement = document.querySelector(`[data-topic="${topic}"]`);
+            if (topicElement) {
+                topicElement.classList.remove('bg-slate-700/50', 'border-slate-600', 'text-slate-300');
+                topicElement.classList.add('bg-blue-500/20', 'border-blue-500/30', 'text-blue-400');
+            }
         }
 
         function selectAudience(audience) {
@@ -6827,8 +6830,11 @@ Which myth has your organization encountered?
                 btn.classList.remove('bg-purple-500/20', 'border-purple-500/30', 'text-purple-300');
                 btn.classList.add('bg-slate-700/50', 'border-slate-600', 'text-slate-300');
             });
-            document.querySelector(`[data-audience="${audience}"]`).classList.remove('bg-slate-700/50', 'border-slate-600', 'text-slate-300');
-            document.querySelector(`[data-audience="${audience}"]`).classList.add('bg-purple-500/20', 'border-purple-500/30', 'text-purple-300');
+            const audienceElement = document.querySelector(`[data-audience="${audience}"]`);
+            if (audienceElement) {
+                audienceElement.classList.remove('bg-slate-700/50', 'border-slate-600', 'text-slate-300');
+                audienceElement.classList.add('bg-purple-500/20', 'border-purple-500/30', 'text-purple-300');
+            }
         }
 
         function selectTone(tone) {
@@ -6837,8 +6843,11 @@ Which myth has your organization encountered?
                 btn.classList.remove('bg-green-500/20', 'border-green-500/30', 'text-green-300');
                 btn.classList.add('bg-slate-700/50', 'border-slate-600', 'text-slate-300');
             });
-            document.querySelector(`[data-tone="${tone}"]`).classList.remove('bg-slate-700/50', 'border-slate-600', 'text-slate-300');
-            document.querySelector(`[data-tone="${tone}"]`).classList.add('bg-green-500/20', 'border-green-500/30', 'text-green-300');
+            const toneElement = document.querySelector(`[data-tone="${tone}"]`);
+            if (toneElement) {
+                toneElement.classList.remove('bg-slate-700/50', 'border-slate-600', 'text-slate-300');
+                toneElement.classList.add('bg-green-500/20', 'border-green-500/30', 'text-green-300');
+            }
         }
 
         function selectMediaType(mediaType) {
@@ -11591,6 +11600,19 @@ The content should be immediately usable as a LinkedIn post that drives engageme
             const registerBtn = document.getElementById('register-btn');
             if (registerBtn) {
                 registerBtn.addEventListener('click', handleRegister);
+            }
+            
+            // Connect Generate 5 Posts button
+            const generateMultipleBtn = document.getElementById('generate-multiple-btn');
+            if (generateMultipleBtn) {
+                generateMultipleBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    console.log('🔄 Generate 5 Posts button clicked');
+                    generateMultiplePosts();
+                });
+                console.log('✅ Generate 5 Posts button event listener attached');
+            } else {
+                console.log('❌ Generate 5 Posts button not found');
             }
             
             const showRegisterBtn = document.getElementById('show-register-btn');

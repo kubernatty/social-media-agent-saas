@@ -1,0 +1,190 @@
+{
+  "plugin_info": {
+    "name": "LinkedIn Templates Plugin",
+    "version": "1.0.0",
+    "description": "Comprehensive LinkedIn post templates across 25 categories",
+    "total_categories": 25,
+    "templates_per_category": 10,
+    "total_templates": 250
+  },
+  "categories": [
+    {
+      "name": "Personal Story",
+      "description": "Personal narratives and transformation stories",
+      "use_cases": ["Brand building", "Thought leadership", "Engagement"],
+      "avg_engagement": "High",
+      "best_for": ["Executives", "Entrepreneurs", "Personal brands"]
+    },
+    {
+      "name": "Lessons Learned",
+      "description": "Professional insights and key learnings",
+      "use_cases": ["Knowledge sharing", "Mentorship", "Thought leadership"],
+      "avg_engagement": "High",
+      "best_for": ["Senior professionals", "Consultants", "Coaches"]
+    },
+    {
+      "name": "Industry Insights",
+      "description": "Industry trends, analysis, and predictions",
+      "use_cases": ["Thought leadership", "Industry positioning", "B2B engagement"],
+      "avg_engagement": "Medium-High",
+      "best_for": ["Industry experts", "Analysts", "Business leaders"]
+    },
+    {
+      "name": "Career Advice",
+      "description": "Professional development and career guidance",
+      "use_cases": ["Mentorship", "HR content", "Career coaching"],
+      "avg_engagement": "High",
+      "best_for": ["HR professionals", "Career coaches", "Managers"]
+    },
+    {
+      "name": "Leadership",
+      "description": "Leadership principles, challenges, and insights",
+      "use_cases": ["Executive branding", "Management content", "Inspiration"],
+      "avg_engagement": "Medium-High",
+      "best_for": ["Executives", "Team leaders", "Managers"]
+    },
+    {
+      "name": "Success Stories",
+      "description": "Achievement narratives and case studies",
+      "use_cases": ["Social proof", "Inspiration", "Business development"],
+      "avg_engagement": "High",
+      "best_for": ["Business owners", "Sales professionals", "Agencies"]
+    },
+    {
+      "name": "Motivation",
+      "description": "Inspirational and motivational content",
+      "use_cases": ["Engagement", "Brand building", "Community building"],
+      "avg_engagement": "High",
+      "best_for": ["Coaches", "Speakers", "Personal brands"]
+    },
+    {
+      "name": "Business Strategy",
+      "description": "Strategic insights and business analysis",
+      "use_cases": ["B2B content", "Thought leadership", "Consulting"],
+      "avg_engagement": "Medium",
+      "best_for": ["Consultants", "Business strategists", "Executives"]
+    },
+    {
+      "name": "Technology Trends",
+      "description": "Tech insights, AI, and digital transformation",
+      "use_cases": ["Tech thought leadership", "Innovation content", "B2B tech"],
+      "avg_engagement": "Medium-High",
+      "best_for": ["Tech professionals", "CTOs", "Innovation leaders"]
+    },
+    {
+      "name": "Team Building",
+      "description": "Team dynamics, collaboration, and culture",
+      "use_cases": ["HR content", "Management tips", "Culture building"],
+      "avg_engagement": "Medium",
+      "best_for": ["HR professionals", "Team leaders", "Culture advocates"]
+    },
+    {
+      "name": "Work-Life Balance",
+      "description": "Balance, productivity, and wellness at work",
+      "use_cases": ["Personal branding", "Wellness advocacy", "Employee engagement"],
+      "avg_engagement": "High",
+      "best_for": ["Wellness advocates", "HR professionals", "Personal brands"]
+    },
+    {
+      "name": "Innovation",
+      "description": "Innovation processes, creativity, and breakthrough thinking",
+      "use_cases": ["Innovation leadership", "Creative content", "R&D insights"],
+      "avg_engagement": "Medium",
+      "best_for": ["Innovation leaders", "R&D professionals", "Creative directors"]
+    },
+    {
+      "name": "Networking",
+      "description": "Professional networking and relationship building",
+      "use_cases": ["Network building", "Career development", "Business development"],
+      "avg_engagement": "Medium-High",
+      "best_for": ["Sales professionals", "Business developers", "Career coaches"]
+    },
+    {
+      "name": "Problem Solving",
+      "description": "Problem-solving approaches and methodologies",
+      "use_cases": ["Thought leadership", "Consulting content", "Educational"],
+      "avg_engagement": "Medium",
+      "best_for": ["Consultants", "Problem solvers", "Analysts"]
+    },
+    {
+      "name": "Communication",
+      "description": "Communication skills and strategies",
+      "use_cases": ["Professional development", "Leadership content", "Training"],
+      "avg_engagement": "Medium-High",
+      "best_for": ["Trainers", "Communication coaches", "Leaders"]
+    },
+    {
+      "name": "Sales & Marketing",
+      "description": "Sales strategies, marketing insights, and customer acquisition",
+      "use_cases": ["Sales content", "Marketing insights", "Business development"],
+      "avg_engagement": "Medium-High",
+      "best_for": ["Sales professionals", "Marketers", "Business developers"]
+    },
+    {
+      "name": "Finance & Business",
+      "description": "Financial insights, business metrics, and economic analysis",
+      "use_cases": ["Financial education", "Business insights", "Investment content"],
+      "avg_engagement": "Medium",
+      "best_for": ["Finance professionals", "Business analysts", "CFOs"]
+    },
+    {
+      "name": "Customer Experience",
+      "description": "Customer service, experience design, and satisfaction",
+      "use_cases": ["CX content", "Service excellence", "Customer advocacy"],
+      "avg_engagement": "Medium",
+      "best_for": ["CX professionals", "Service managers", "Customer success"]
+    },
+    {
+      "name": "Digital Marketing",
+      "description": "Digital marketing strategies, channels, and optimization",
+      "use_cases": ["Marketing insights", "Digital strategy", "Performance marketing"],
+      "avg_engagement": "Medium-High",
+      "best_for": ["Digital marketers", "Growth hackers", "Marketing managers"]
+    },
+    {
+      "name": "Data & Analytics",
+      "description": "Data insights, analytics, and data-driven decision making",
+      "use_cases": ["Data insights", "Analytics content", "Business intelligence"],
+      "avg_engagement": "Medium",
+      "best_for": ["Data scientists", "Analysts", "BI professionals"]
+    },
+    {
+      "name": "Entrepreneurship",
+      "description": "Startup insights, entrepreneurial journey, and business building",
+      "use_cases": ["Entrepreneur branding", "Startup content", "Business inspiration"],
+      "avg_engagement": "High",
+      "best_for": ["Entrepreneurs", "Startup founders", "Business owners"]
+    },
+    {
+      "name": "Mental Health & Wellness",
+      "description": "Workplace wellness, mental health awareness, and self-care",
+      "use_cases": ["Wellness advocacy", "Mental health awareness", "Personal sharing"],
+      "avg_engagement": "High",
+      "best_for": ["Wellness advocates", "Mental health professionals", "Personal brands"]
+    }
+  ],
+  "placeholder_types": {
+    "situational": ["challenge", "situation", "context", "moment", "crisis"],
+    "emotional": ["emotion", "feeling", "reaction", "impact"],
+    "actionable": ["action", "solution", "approach", "strategy", "method"],
+    "outcome": ["result", "outcome", "change", "transformation", "achievement"],
+    "temporal": ["timeframe", "timeline", "period", "duration"],
+    "people": ["person", "team", "audience", "customer", "stakeholder"],
+    "business": ["company", "project", "product", "service", "industry"],
+    "learning": ["lesson", "insight", "realization", "discovery", "learning"]
+  },
+  "usage_guidelines": {
+    "personalization": "Always customize placeholders with specific, relevant details",
+    "authenticity": "Use real experiences and genuine insights when possible",
+    "engagement": "Include questions or calls-to-action to encourage interaction",
+    "hashtags": "Templates include relevant hashtags, but customize for your audience",
+    "length": "Most templates are optimized for LinkedIn's sweet spot of 150-300 characters",
+    "frequency": "Vary template categories to maintain content diversity"
+  },
+  "ai_integration": {
+    "supported_models": ["Ollama", "OpenAI GPT", "Claude", "Local LLMs"],
+    "prompt_structure": "Context + Placeholder Type + Tone + Length Requirements",
+    "fallback_strategy": "Manual fill when AI is unavailable",
+    "quality_checks": ["Relevance", "Tone consistency", "Length appropriateness"]
+  }
+}

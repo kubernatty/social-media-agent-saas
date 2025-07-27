@@ -1,0 +1,251 @@
+/**
+ * Base Styles for AIfluence
+ * Extracted from standalone.html for better organization
+ */
+
+/* Font Import */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Base Typography */
+body { 
+    font-family: 'Inter', sans-serif; 
+}
+
+/* Drag and Drop Styles */
+.post-card {
+    transition: all 0.2s ease;
+}
+
+.post-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.post-card.dragging {
+    opacity: 0.5;
+    transform: rotate(2deg);
+}
+
+.drag-handle:hover {
+    cursor: grab;
+}
+
+.drag-handle:active {
+    cursor: grabbing;
+}
+
+/* Text Utilities */
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3; /* Standard property */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Scheduling Preview Styles */
+.schedule-preview-item {
+    transition: all 0.2s ease;
+    cursor: move;
+}
+
+.schedule-preview-item:hover {
+    background-color: rgba(71, 85, 105, 0.5);
+}
+
+.schedule-preview-item.dragging {
+    opacity: 0.5;
+    transform: rotate(1deg);
+}
+
+/* Button Styles */
+.btn-primary {
+    @apply px-4 py-2 bg-gradient-to-r from-aifluence-600 to-purple-600 hover:from-aifluence-700 hover:to-purple-700 text-white rounded-lg transition-colors;
+}
+
+.btn-secondary {
+    @apply px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors;
+}
+
+/* Loading States */
+.loading {
+    position: relative;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Form Styles */
+.form-input {
+    @apply w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:border-aifluence-500 focus:ring-1 focus:ring-aifluence-500;
+}
+
+.form-label {
+    @apply block text-sm font-medium text-slate-300 mb-2;
+}
+
+/* Card Styles */
+.card {
+    @apply bg-slate-800/50 backdrop-blur-md border border-slate-700 rounded-xl p-6;
+}
+
+.card-header {
+    @apply mb-6 pb-4 border-b border-slate-700;
+}
+
+.card-title {
+    @apply text-xl font-semibold text-white;
+}
+
+.card-description {
+    @apply text-slate-400 text-sm mt-1;
+}
+
+/* Animation Utilities */
+.fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.slide-up {
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { 
+        opacity: 0; 
+        transform: translateY(20px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+/* Focus Styles */
+.focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-aifluence-500 focus:ring-offset-2 focus:ring-offset-slate-900;
+}
+
+/* Status Indicators */
+.status-online {
+    @apply bg-green-500;
+}
+
+.status-offline {
+    @apply bg-gray-500;
+}
+
+.status-error {
+    @apply bg-red-500;
+}
+
+.status-warning {
+    @apply bg-yellow-500;
+}
+
+/* Toast Animations */
+.toast-enter {
+    transform: translateX(100%);
+    opacity: 0;
+}
+
+.toast-enter-active {
+    transform: translateX(0);
+    opacity: 1;
+    transition: all 0.3s ease-out;
+}
+
+.toast-exit {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.toast-exit-active {
+    transform: translateX(100%);
+    opacity: 0;
+    transition: all 0.3s ease-in;
+}
+
+/* Mobile Responsive Utilities */
+@media (max-width: 640px) {
+    .mobile-stack {
+        @apply flex-col;
+    }
+    
+    .mobile-full {
+        @apply w-full;
+    }
+    
+    .mobile-text-sm {
+        @apply text-sm;
+    }
+}
+
+/* Dark Theme Utilities */
+.dark-surface {
+    @apply bg-slate-800/50 border-slate-700;
+}
+
+.dark-text {
+    @apply text-slate-300;
+}
+
+.dark-text-muted {
+    @apply text-slate-400;
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+    .card {
+        @apply border-2;
+    }
+    
+    .btn-primary {
+        @apply border-2 border-aifluence-400;
+    }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    body {
+        @apply bg-white text-black;
+    }
+    
+    .card {
+        @apply border border-gray-300 bg-white;
+    }
+}

@@ -1,0 +1,2366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIfluence - AI-Powered Social Media Intelligence</title>
+    
+    <!-- SECURITY HEADERS -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data: blob:; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.tailwindcss.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https: ws: wss: http://localhost:*; img-src 'self' https: data: blob:; frame-src 'none';">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    
+    <!-- FAVICON -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZGllbnQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgo8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMTQ5N0ZGO3N0b3Atb3BhY2l0eToxIiAvPgo8c3RvcCBvZmZzZXQ9IjUwJSIgc3R5bGU9InN0b3AtY29sb3I6IzhCNUNGNjtzdG9wLW9wYWNpdHk6MSIgLz4KPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojRkY3MEIyO3N0b3Atb3BhY2l0eToxIiAvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+CjxyZWN0IHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgcng9IjgiIGZpbGw9InVybCgjZ3JhZGllbnQpIi8+CjxwYXRoIGQ9Ik0xMCA4SDIyQzIzLjEwNDYgOCAyNCA4Ljg5NTQzIDI0IDEwVjE0QzI0IDE1LjEwNDYgMjMuMTA0NiAxNiAyMiAxNkgxOEwxNCAyMFYxNkgxMEM4Ljg5NTQzIDE2IDggMTUuMTA0NiA4IDE0VjEwQzggOC44OTU0MyA4Ljg5NTQzIDggMTAgOFoiIGZpbGw9IndoaXRlIiBmaWxsLW9wYWNpdHk9IjAuOSIvPgo8Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxLjUiIGZpbGw9InVybCgjZ3JhZGllbnQpIi8+CjxjaXJjbGUgY3g9IjE2IiBjeT0iMTIiIHI9IjEuNSIgZmlsbD0idXJsKCdncmFkaWVudCkiLz4KPGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMS41IiBmaWxsPSJ1cmwoI2dyYWRpZW50KSIvPgo8cGF0aCBkPSJNMTQgMjJDMTYuNzYxNCAyMiAxOSAyNC4yMzg2IDE5IDI3SDlDOSAyNC4yMzg2IDExLjIzODYgMjIgMTQgMjJaIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjciLz4KPC9zdmc+">
+    
+    <!-- META -->
+    <meta name="description" content="AI-powered social media intelligence platform for creating, scheduling, and analyzing LinkedIn content">
+    
+    <!-- FONTS -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- TAILWIND CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'linkedin': '#0077B5',
+                        'linkedin-hover': '#005885',
+                        'aifluence': {
+                            '50': '#eff8ff',
+                            '100': '#dbeefe',
+                            '200': '#bfe2fe',
+                            '300': '#93d0fd',
+                            '400': '#60b4fa',
+                            '500': '#3b97f6',
+                            '600': '#1497ff',
+                            '700': '#0c6adf',
+                            '800': '#1155b5',
+                            '900': '#154a8e'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- BASE STYLES -->
+    <style>
+        /* Base styles from modular CSS */
+        body { font-family: 'Inter', sans-serif; }
+        
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 2px solid transparent;
+            border-top: 2px solid currentColor;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white font-['Inter']">
+    
+    <!-- LOADING INDICATOR -->
+    <div id="loading-indicator" class="fixed inset-0 bg-slate-900 z-50 flex items-center justify-center">
+        <div class="text-center">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-aifluence-600 mx-auto mb-4"></div>
+            <p class="text-slate-400">Loading AIfluence...</p>
+        </div>
+    </div>
+
+    <!-- AUTHENTICATION SECTION -->
+    <div id="auth-section" class="hidden min-h-screen flex items-center justify-center p-4">
+        <div class="max-w-md w-full space-y-8">
+            <!-- Logo -->
+            <div class="text-center">
+                <div class="mx-auto h-16 w-16 bg-gradient-to-r from-aifluence-600 to-purple-600 rounded-xl flex items-center justify-center mb-4">
+                    <svg class="h-8 w-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <h1 class="text-3xl font-bold text-white">AIfluence</h1>
+                <p class="text-slate-400 mt-2">AI-Powered Social Media Intelligence</p>
+            </div>
+
+            <!-- Demo Account Button -->
+            <button id="demo-account-btn" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all">
+                🎭 Try Demo Account
+            </button>
+
+            <!-- Initial Buttons -->
+            <div id="auth-buttons" class="space-y-3">
+                <button id="login-btn" class="w-full flex justify-center py-3 px-4 border border-slate-600 rounded-lg shadow-sm text-sm font-medium text-slate-300 bg-slate-800 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
+                    Sign In
+                </button>
+                <button id="register-btn" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-slate-700 hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
+                    Create Account
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APPLICATION -->
+    <div id="main-app" class="hidden">
+        <!-- Navigation -->
+        <nav class="bg-slate-800/50 backdrop-blur-md border-b border-slate-700">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <h1 class="text-xl font-bold text-white">AIfluence</h1>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <span class="text-sm text-slate-300">Welcome, <span class="user-name">User</span></span>
+                        <button onclick="handleLogout()" class="text-sm text-slate-400 hover:text-white">Sign Out</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Content Generator Section -->
+        <div class="max-w-4xl mx-auto p-6">
+            <div id="content-generator" class="bg-slate-800/50 backdrop-blur-md border border-slate-700 rounded-xl p-6">
+                <h2 class="text-2xl font-bold text-white mb-6">AI Content Generator</h2>
+                
+                <!-- LinkedIn Integration Status -->
+                <div class="mb-4 p-4 bg-slate-700/30 border border-slate-600 rounded-lg">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-sm font-medium text-white">LinkedIn Data Integration</h3>
+                        <div class="flex items-center space-x-2">
+                            <div id="linkedin-status" class="flex items-center space-x-1">
+                                <div class="w-2 h-2 bg-red-500 rounded-full"></div>
+                                <span class="text-xs text-slate-400">Disconnected</span>
+                            </div>
+                            <button id="connect-linkedin-btn" class="px-3 py-1 bg-linkedin hover:bg-linkedin-hover text-white rounded text-xs transition-colors">
+                                Connect LinkedIn
+                            </button>
+                        </div>
+                    </div>
+                    <div id="linkedin-insights" class="hidden">
+                        <div class="text-xs text-slate-400 mb-2">Recent data from your network:</div>
+                        <div class="grid grid-cols-3 gap-4 text-xs">
+                            <div class="text-center">
+                                <div id="posts-analyzed" class="text-white font-medium">0</div>
+                                <div class="text-slate-500">Posts Analyzed</div>
+                            </div>
+                            <div class="text-center">
+                                <div id="trending-topics" class="text-white font-medium">0</div>
+                                <div class="text-slate-500">Trending Topics</div>
+                            </div>
+                            <div class="text-center">
+                                <div id="last-refresh" class="text-white font-medium">Never</div>
+                                <div class="text-slate-500">Last Refresh</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input Fields -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-2">Your Professional Role</label>
+                        <select id="professional-role" class="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-aifluence-500">
+                            <option value="ceo">CEO / Executive</option>
+                            <option value="cto">CTO / Tech Executive</option>
+                            <option value="marketing-manager">Marketing Manager</option>
+                            <option value="product-manager">Product Manager</option>
+                            <option value="sales-director">Sales Director</option>
+                            <option value="hr-director">HR Director</option>
+                            <option value="finance-director">Finance Director</option>
+                            <option value="operations-manager">Operations Manager</option>
+                            <option value="startup-founder">Startup Founder</option>
+                            <option value="consultant">Business Consultant</option>
+                            <option value="data-scientist">Data Scientist</option>
+                            <option value="design-director">Design Director</option>
+                            <option value="medical-professional">Medical Professional</option>
+                            <option value="legal-professional">Legal Professional</option>
+                            <option value="academic">Academic / Researcher</option>
+                            <option value="art-critic">Art Critic / Creative</option>
+                            <option value="finance-professional">Finance Professional</option>
+                            <option value="real-estate">Real Estate Professional</option>
+                            <option value="non-profit-leader">Non-Profit Leader</option>
+                            <option value="other">Other Professional</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-2">Content Theme</label>
+                        <select id="content-theme" class="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-aifluence-500">
+                            <option value="trending">Use Trending Topics</option>
+                            <option value="custom">Custom Theme</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-2">Custom Focus</label>
+                        <input id="content-focus" type="text" value="" class="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-aifluence-500" placeholder="e.g., team leadership, market trends, innovation">
+                    </div>
+                </div>
+
+                <!-- Trending Topics Display -->
+                <div id="trending-topics-display" class="hidden mb-6 p-4 bg-slate-700/30 border border-slate-600 rounded-lg">
+                    <h4 class="text-sm font-medium text-white mb-3">🔥 Trending in Your Network</h4>
+                    <div id="trending-topics-list" class="flex flex-wrap gap-2">
+                        <!-- Topics will be dynamically inserted -->
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-wrap gap-3 mb-6">
+                    <button id="generate-btn" class="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-aifluence-600 to-purple-600 hover:from-aifluence-700 hover:to-purple-700 text-white rounded-lg transition-colors">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                        <span>Generate Post</span>
+                    </button>
+                    <button id="generate-multiple-btn" class="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-lg transition-colors">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012 2v2M7 7h10"></path>
+                        </svg>
+                        <span>Generate 5 Posts</span>
+                    </button>
+                </div>
+
+                <!-- Generated Content Display -->
+                <div id="generated-content" class="hidden mt-6 p-4 bg-slate-700/50 border border-slate-600 rounded-lg">
+                    <h3 class="text-lg font-semibold text-white mb-3">Generated Content</h3>
+                    <div id="content-text" class="text-slate-300 whitespace-pre-wrap mb-3"></div>
+                    <div id="char-count" class="text-sm text-slate-500"></div>
+                </div>
+
+                <!-- Multiple Posts Display -->
+                <div id="multiple-posts-container" class="hidden mt-6">
+                    <div class="bg-slate-700/50 border border-slate-600 rounded-lg p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-semibold text-white">Generated Posts (<span id="posts-count">0</span>)</h3>
+                            <div class="flex space-x-2">
+                                <button id="copy-all-posts" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm transition-colors">
+                                    📋 Copy All
+                                </button>
+                                <button id="clear-posts" class="px-4 py-2 bg-slate-600 hover:bg-slate-500 text-white rounded-lg text-sm transition-colors">
+                                    🗑️ Clear
+                                </button>
+                            </div>
+                        </div>
+                        <div id="posts-list" class="space-y-4">
+                            <!-- Posts will be dynamically inserted here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATIONS -->
+    <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+    <!-- SCRIPTS -->
+    <script>
+        // API Configuration (modularized but inline for compatibility)
+        window.API_CONFIG = {
+            BASE_URL: window.location.protocol === 'file:' 
+                ? 'http://localhost:3001' 
+                : window.location.protocol + '//' + window.location.hostname + ':3001',
+            
+            ENDPOINTS: {
+                REGISTER: '/api/auth/register',
+                LOGIN: '/api/auth/login',
+                VERIFY: '/api/auth/verify',
+                REFRESH: '/api/auth/refresh',
+                USER_PROFILE: '/api/users/profile',
+                USER_STATS: '/api/users/stats',
+                POSTS: '/api/posts',
+                LINKEDIN_CONNECTION: '/api/linkedin/connection',
+                ANALYTICS_EVENT: '/api/analytics/event',
+                OPENAI_IMAGES: '/api/openai/images'
+            },
+            
+            DEFAULT_HEADERS: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            
+            getAuthHeaders: function() {
+                const token = localStorage.getItem('aifluence_auth_token');
+                return token ? { 
+                    ...this.DEFAULT_HEADERS, 
+                    'Authorization': `Bearer ${token}` 
+                } : this.DEFAULT_HEADERS;
+            }
+        };
+
+        // Toast notification system (modularized but inline)
+        window.showToast = function(message, type = 'info', duration = 4000) {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+
+            const toast = document.createElement('div');
+            toast.className = `max-w-sm w-full shadow-lg rounded-lg pointer-events-auto transform transition-all duration-300 translate-x-full`;
+            
+            const bgColor = {
+                success: 'bg-green-600',
+                error: 'bg-red-600',
+                warning: 'bg-yellow-600',
+                info: 'bg-blue-600'
+            }[type] || 'bg-slate-600';
+
+            const icon = {
+                success: '✅',
+                error: '❌',
+                warning: '⚠️',
+                info: 'ℹ️'
+            }[type] || 'ℹ️';
+
+            toast.innerHTML = `
+                <div class="${bgColor} p-4 rounded-lg text-white">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 mr-3">
+                            <span class="text-lg">${icon}</span>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-sm font-medium">${message}</p>
+                        </div>
+                        <button onclick="this.parentElement.parentElement.parentElement.remove()" class="ml-3 text-white hover:text-gray-200 focus:outline-none">
+                            <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.remove('translate-x-full'), 100);
+            setTimeout(() => {
+                toast.classList.add('translate-x-full');
+                setTimeout(() => toast.remove(), 300);
+            }, duration);
+        };
+
+        // Authentication Service (modularized but inline)
+        class AuthService {
+            constructor() {
+                this.currentUser = null;
+                this.initialized = false;
+            }
+
+            async initialize() {
+                console.log('🔐 Initializing AuthService...');
+                const savedUserId = localStorage.getItem('socialMediaAgent_currentUserId');
+                const persistentLogin = localStorage.getItem('socialMediaAgent_persistentLogin');
+                
+                if (savedUserId && persistentLogin === 'true') {
+                    await this.loadUserFromStorage(savedUserId);
+                }
+                
+                this.initialized = true;
+                console.log('✅ AuthService initialized');
+            }
+
+            async loadUserFromStorage(userId) {
+                try {
+                    const users = JSON.parse(localStorage.getItem('socialMediaAgent_users') || '[]');
+                    const user = users.find(u => u.id === userId);
+                    
+                    if (user) {
+                        this.currentUser = user;
+                        console.log('👤 User loaded from storage:', user.name);
+                        this.dispatchAuthEvent('login', user);
+                        return user;
+                    }
+                } catch (error) {
+                    console.error('❌ Error loading user from storage:', error);
+                }
+                return null;
+            }
+
+            async useDemoAccount() {
+                console.log('🎭 Using demo account...');
+                
+                const demoUser = {
+                    id: 'demo_user_' + Date.now(),
+                    name: 'Demo User',
+                    email: 'demo@aifluence.com',
+                    plan: 'pro',
+                    isDemo: true,
+                    createdAt: new Date().toISOString(),
+                    preferences: {
+                        theme: 'dark',
+                        notifications: true,
+                        autoSchedule: true
+                    },
+                    usage: {
+                        postsGenerated: 23,
+                        postsScheduled: 15,
+                        linkedInConnections: 1
+                    }
+                };
+                
+                localStorage.setItem('socialMediaAgent_currentUserId', demoUser.id);
+                localStorage.setItem('socialMediaAgent_persistentLogin', 'true');
+                
+                this.currentUser = demoUser;
+                console.log('✅ Demo account activated');
+                this.dispatchAuthEvent('demo-login', demoUser);
+                
+                return { success: true, user: demoUser };
+            }
+
+            async logout() {
+                console.log('🔄 Logging out user...');
+                
+                localStorage.removeItem('socialMediaAgent_currentUserId');
+                localStorage.removeItem('socialMediaAgent_persistentLogin');
+                localStorage.removeItem('socialMediaAgent_currentSession');
+                localStorage.removeItem('aifluence_auth_token');
+                
+                const previousUser = this.currentUser;
+                this.currentUser = null;
+                
+                console.log('✅ User logged out successfully');
+                this.dispatchAuthEvent('logout', previousUser);
+                
+                return { success: true };
+            }
+
+            getCurrentUser() {
+                return this.currentUser;
+            }
+
+            isAuthenticated() {
+                return this.currentUser !== null;
+            }
+
+            dispatchAuthEvent(type, user) {
+                const event = new CustomEvent('auth-state-change', {
+                    detail: { type, user }
+                });
+                document.dispatchEvent(event);
+            }
+
+            onAuthStateChange(callback) {
+                document.addEventListener('auth-state-change', (event) => {
+                    callback(event.detail.type, event.detail.user);
+                });
+            }
+        }
+
+        // Role-Based Content Generator
+        class ContentGenerator {
+            constructor() {
+                this.currentPost = null;
+                this.generatedPosts = [];
+            }
+
+            async init() {
+                // Initialize LinkedIn data collector and RAG system
+                this.linkedinCollector = new LinkedInDataCollector();
+                this.ragSystem = new RAGContentSystem();
+                this.intelligentAgent = new ContentIntelligenceAgent();
+                this.trendAnalyzer = new TrendAnalyzer();
+                
+                console.log('🚀 Initializing LinkedIn RAG Content Generator...');
+                
+                // Set up LinkedIn connection handler
+                this.setupLinkedInIntegration();
+                
+                // Load cached data if available
+                await this.loadCachedData();
+                
+                console.log('✅ LinkedIn RAG Content Generator initialized');
+            }
+
+            setupLinkedInIntegration() {
+                const connectBtn = document.getElementById('connect-linkedin-btn');
+                if (connectBtn) {
+                    connectBtn.addEventListener('click', () => this.connectToLinkedIn());
+                }
+                
+                // Auto-refresh data every 30 minutes
+                setInterval(() => {
+                    if (this.linkedinCollector.isConnected()) {
+                        this.refreshLinkedInData();
+                    }
+                }, 30 * 60 * 1000);
+            }
+
+            async connectToLinkedIn() {
+                console.log('🔗 Connecting to LinkedIn...');
+                
+                try {
+                    // Simulate LinkedIn OAuth flow (in real implementation, this would use LinkedIn API)
+                    const success = await this.linkedinCollector.connect();
+                    
+                    if (success) {
+                        this.updateLinkedInStatus('connected');
+                        showToast('LinkedIn connected successfully!', 'success');
+                        
+                        // Start initial data collection
+                        await this.refreshLinkedInData();
+                    } else {
+                        throw new Error('LinkedIn connection failed');
+                    }
+                    
+                } catch (error) {
+                    console.error('❌ LinkedIn connection error:', error);
+                    showToast('Failed to connect to LinkedIn. Please try again.', 'error');
+                }
+            }
+
+            updateLinkedInStatus(status) {
+                const statusIndicator = document.getElementById('linkedin-status');
+                const insightsPanel = document.getElementById('linkedin-insights');
+                const connectBtn = document.getElementById('connect-linkedin-btn');
+                
+                if (status === 'connected') {
+                    statusIndicator.innerHTML = `
+                        <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                        <span class="text-xs text-slate-400">Connected</span>
+                    `;
+                    connectBtn.textContent = 'Refresh Data';
+                    connectBtn.onclick = () => this.refreshLinkedInData();
+                    insightsPanel.classList.remove('hidden');
+                } else {
+                    statusIndicator.innerHTML = `
+                        <div class="w-2 h-2 bg-red-500 rounded-full"></div>
+                        <span class="text-xs text-slate-400">Disconnected</span>
+                    `;
+                    connectBtn.textContent = 'Connect LinkedIn';
+                    connectBtn.onclick = () => this.connectToLinkedIn();
+                    insightsPanel.classList.add('hidden');
+                }
+            }
+
+            async refreshLinkedInData() {
+                console.log('🔄 Refreshing LinkedIn data...');
+                
+                try {
+                    showToast('Refreshing LinkedIn data...', 'info', 2000);
+                    
+                    // Collect recent posts from network
+                    const recentPosts = await this.linkedinCollector.collectRecentPosts();
+                    
+                    // Analyze posts with RAG system
+                    const analysis = await this.ragSystem.analyzeContent(recentPosts);
+                    
+                    // Extract trending topics
+                    const trendingTopics = await this.trendAnalyzer.extractTrends(recentPosts);
+                    
+                    // Update agent memory
+                    await this.intelligentAgent.updateMemory(analysis, trendingTopics);
+                    
+                    // Update UI
+                    this.updateInsightsDisplay(recentPosts.length, trendingTopics.length);
+                    this.displayTrendingTopics(trendingTopics);
+                    
+                    showToast(`Updated with ${recentPosts.length} posts and ${trendingTopics.length} trending topics!`, 'success');
+                    
+                } catch (error) {
+                    console.error('❌ Error refreshing LinkedIn data:', error);
+                    showToast('Failed to refresh LinkedIn data', 'error');
+                }
+            }
+
+            updateInsightsDisplay(postsCount, topicsCount) {
+                document.getElementById('posts-analyzed').textContent = postsCount;
+                document.getElementById('trending-topics').textContent = topicsCount;
+                document.getElementById('last-refresh').textContent = new Date().toLocaleTimeString();
+            }
+
+            displayTrendingTopics(topics) {
+                const container = document.getElementById('trending-topics-list');
+                const display = document.getElementById('trending-topics-display');
+                
+                if (topics.length > 0) {
+                    display.classList.remove('hidden');
+                    container.innerHTML = topics.slice(0, 10).map(topic => `
+                        <span class="px-3 py-1 bg-aifluence-600/20 text-aifluence-300 rounded-full text-xs cursor-pointer hover:bg-aifluence-600/30 transition-colors" 
+                              onclick="contentGenerator.selectTrendingTopic('${topic.name}')">
+                            ${topic.name} (${topic.mentions})
+                        </span>
+                    `).join('');
+                } else {
+                    display.classList.add('hidden');
+                }
+            }
+
+            selectTrendingTopic(topicName) {
+                document.getElementById('content-theme').value = 'custom';
+                document.getElementById('content-focus').value = topicName;
+                showToast(`Selected trending topic: ${topicName}`, 'success');
+            }
+
+            async loadCachedData() {
+                try {
+                    const cachedData = localStorage.getItem('linkedin_rag_data');
+                    if (cachedData) {
+                        const data = JSON.parse(cachedData);
+                        await this.ragSystem.loadCache(data.ragData);
+                        await this.intelligentAgent.loadMemory(data.agentMemory);
+                        
+                        if (data.trendingTopics) {
+                            this.displayTrendingTopics(data.trendingTopics);
+                            this.updateInsightsDisplay(data.postsAnalyzed || 0, data.trendingTopics.length);
+                        }
+                        
+                        console.log('✅ Cached LinkedIn data loaded');
+                    }
+                } catch (error) {
+                    console.error('⚠️ Error loading cached data:', error);
+                }
+            }
+
+            initializeFlexibleStructures() {
+                return {
+                    personalStory: [
+                        {
+                            opening: [
+                                "I just had a conversation that completely shifted my perspective on {topic}.",
+                                "Last week, something happened that changed how I think about {topic}.",
+                                "A client told me something yesterday that I can't stop thinking about.",
+                                "I've been in {topic} for years, but this week taught me something new."
+                            ],
+                            story: [
+                                'A {audience_member} told me: "We spent months planning the perfect {topic} strategy, but forgot to ask our team what they actually needed."',
+                                "I watched a {audience_member} completely transform their approach to {topic} in just 30 minutes.",
+                                'Someone said: "We don\'t need better {topic}, we need to understand why our current approach isn\'t working."',
+                                "I saw a team go from struggling with {topic} to becoming industry leaders - and it had nothing to do with what I expected."
+                            ],
+                            insight: [
+                                "The best {topic} approaches I've seen start with understanding people, not just implementing solutions.",
+                                "Sometimes the biggest breakthroughs come from the simplest changes.",
+                                "Success in {topic} isn't about having the perfect plan - it's about being willing to adapt.",
+                                "The difference between success and failure often comes down to asking the right questions first."
+                            ],
+                            question: [
+                                "What's driving your {topic} decisions - what's possible or what's needed?",
+                                "What would you do differently if you started your {topic} journey today?",
+                                "What's one assumption about {topic} that you're ready to challenge?",
+                                "How are you balancing innovation with practical results in {topic}?"
+                            ]
+                        }
+                    ],
+                    
+                    insights: [
+                        {
+                            opening: [
+                                "The {audience} succeeding with {topic} aren't the ones with the biggest budgets.",
+                                "I've analyzed hundreds of {topic} initiatives this year. The pattern is clear:",
+                                "After working with {audience} across different industries, I've noticed something:",
+                                "The biggest misconception about {topic}? That it's just about the tactics."
+                            ],
+                            framework: [
+                                "They're asking better questions:\n• What problem are we actually solving?\n• How will we measure success?\n• What happens if this doesn't work?\n• Who needs to be involved?",
+                                "Successful approaches share these traits:\n• Started small, scaled gradually\n• Focused on user adoption\n• Measured business impact\n• Adapted based on feedback",
+                                "The pattern is consistent:\n• Clear objectives from day one\n• Regular check-ins and adjustments\n• Strong stakeholder buy-in\n• Focus on sustainable practices",
+                                "Three things separate the winners:\n• They define success upfront\n• They measure what matters\n• They're willing to pivot when needed"
+                            ],
+                            insight: [
+                                "Strategy beats tactics every time.",
+                                "Small wins compound into big results.",
+                                "Execution is more important than perfection.",
+                                "People make the difference, not just process."
+                            ],
+                            question: [
+                                "What questions are you asking about your {topic} initiatives?",
+                                "How are you measuring success in {topic}?",
+                                "What small experiment could you start next week?",
+                                "Where are you focusing your {topic} efforts?"
+                            ]
+                        }
+                    ],
+                    
+                    controversial: [
+                        {
+                            statement: [
+                                "Unpopular opinion: Most {audience} aren't ready for {topic}.",
+                                "Hot take: Your {topic} strategy is probably backwards.",
+                                "Controversial thought: {topic} isn't your real problem.",
+                                "Hard truth: Most {topic} initiatives fail for predictable reasons."
+                            ],
+                            reasoning: [
+                                "Not because they lack resources or knowledge, but because they skip the fundamentals.",
+                                "Instead of asking 'What can {topic} do for us?' they should ask 'What do our customers actually need?'",
+                                "They're treating {topic} as a solution when they haven't clearly defined the problem.",
+                                "They focus on implementation before understanding the why behind their approach."
+                            ],
+                            reality: [
+                                "{topic} amplifies what you already do. If your foundation is weak, {topic} will just help you fail faster.",
+                                "I've seen too many impressive {topic} demos that solve problems nobody has.",
+                                "Success requires discipline in the boring work: clear processes, defined outcomes, proper planning.",
+                                "The best results come from simple, well-executed approaches - not complex, cutting-edge ones."
+                            ],
+                            challenge: [
+                                "Am I wrong?",
+                                "What problem are you trying to solve, really?",
+                                "Are you ready to do the unglamorous work first?",
+                                "What would you do differently if you started over?"
+                            ]
+                        }
+                    ],
+                    
+                    practical: [
+                        {
+                            framework: [
+                                "Three questions I ask every team before they start with {topic}:",
+                                "The {topic} framework that actually works:",
+                                "Every successful {topic} initiative I've seen follows this pattern:",
+                                "Here's the {topic} approach that consistently delivers results:"
+                            ],
+                            points: [
+                                "1. If this works perfectly, what changes?\n2. If this fails completely, what do we lose?\n3. How will we know we're succeeding?",
+                                "→ Start with a clear objective\n→ Identify the biggest constraint\n→ Test with a small group first\n→ Measure and adjust\n→ Scale gradually",
+                                "• Define success metrics upfront\n• Get stakeholder buy-in early\n• Plan for common obstacles\n• Build feedback loops\n• Focus on adoption, not just implementation",
+                                "Step 1: Understand the current state\nStep 2: Define the desired outcome\nStep 3: Identify the biggest gap\nStep 4: Test the smallest possible change\nStep 5: Scale what works"
+                            ],
+                            reality: [
+                                "Most teams can't answer #1 clearly. Even fewer can answer #3 specifically.",
+                                "The difference between success and failure is often in the execution details.",
+                                "Simple approaches consistently outperform complex ones - but simple doesn't mean easy.",
+                                "The hardest part isn't the {topic} itself - it's getting everyone aligned on the approach."
+                            ],
+                            action: [
+                                "What does success actually look like for your {topic} initiative?",
+                                "Which step are you skipping in your current approach?",
+                                "What's the smallest change you could test this week?",
+                                "How are you measuring progress, not just activity?"
+                            ]
+                        }
+                    ],
+                    
+                    future: [
+                        {
+                            prediction: [
+                                "The {audience} that will dominate the next decade aren't the ones with the most advanced {topic}.",
+                                "I predict the future of {topic} isn't what most people think.",
+                                "In 5 years, the most successful {audience} will be the ones who mastered this aspect of {topic}:",
+                                "The {topic} revolution isn't happening where everyone's looking."
+                            ],
+                            insight: [
+                                "They're the ones making {topic} feel natural and intuitive.",
+                                "It's not about having the latest tactics - it's about understanding timeless principles.",
+                                "Human connection and authentic value creation.",
+                                "It's in the quiet, consistent work that compounds over time."
+                            ],
+                            principles: [
+                                "• Value serves people, not the other way around\n• Adoption matters more than innovation\n• Simple solutions beat complex ones\n• Trust is built through consistency",
+                                "• Understanding beats tactics\n• Relationships beat technology\n• Consistency beats perfection\n• Value beats volume",
+                                "• Quality over quantity\n• Sustainability over growth\n• People over process\n• Results over activity",
+                                "• Long-term thinking\n• Customer-focused approach\n• Continuous improvement\n• Authentic communication"
+                            ],
+                            question: [
+                                "How are you building for the long term in {topic}?",
+                                "What timeless principles guide your {topic} approach?",
+                                "Are you optimizing for short-term gains or long-term value?",
+                                "What skills are you developing that will matter in 5 years?"
+                            ]
+                        }
+                    ]
+                };
+            }
+
+            async generatePost(options = {}) {
+                const topic = options.topic || document.getElementById('custom-topic')?.value || 'AI transformation';
+                const audience = options.audience || document.getElementById('custom-audience')?.value || 'business leaders';
+                const tone = options.tone || document.getElementById('custom-tone')?.value || 'professional';
+
+                console.log('🚀 Generating LinkedIn post...', { topic, audience, tone });
+
+                try {
+                    const content = this.generateIntelligentContent(topic, audience, tone);
+
+                    this.currentPost = {
+                        id: 'post_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
+                        content,
+                        topic,
+                        audience,
+                        tone,
+                        createdAt: new Date().toISOString(),
+                        platform: 'linkedin',
+                        status: 'draft'
+                    };
+
+                    this.displayGeneratedContent(content);
+                    this.trackUsage('post_generated');
+
+                    console.log('✅ Post generated successfully');
+                    return { success: true, post: this.currentPost };
+
+                } catch (error) {
+                    console.error('❌ Error generating post:', error);
+                    return { success: false, error: error.message };
+                }
+            }
+
+            generateIntelligentContent(topic, audience, tone) {
+                // Generate content like a subject matter expert would
+                return this.generateExpertContent(topic, audience, tone);
+            }
+
+            generateExpertContent(topic, audience, tone) {
+                // Determine expert perspective and content approach
+                const expertProfile = this.buildExpertProfile(topic, audience);
+                const contentStrategy = this.selectContentStrategy(tone);
+                const insights = this.generateExpertInsights(topic, expertProfile);
+                
+                // Create content from expert's perspective
+                return this.craftExpertPost(topic, audience, expertProfile, contentStrategy, insights);
+            }
+
+            buildExpertProfile(topic, audience) {
+                const topicLower = topic.toLowerCase();
+                const audienceLower = audience.toLowerCase();
+                
+                // Determine what kind of expert would write about this topic for this audience
+                let expertType = 'industry consultant';
+                let credibility = 'years of experience';
+                let perspective = 'practical insights';
+                let specialization = topic;
+                
+                // Match expert type to topic
+                if (topicLower.includes('medical') || topicLower.includes('health')) {
+                    expertType = audienceLower.includes('student') ? 'medical educator' : 'healthcare strategist';
+                    credibility = 'clinical experience and research';
+                    perspective = 'evidence-based insights';
+                } else if (topicLower.includes('marketing') || topicLower.includes('brand')) {
+                    expertType = 'marketing strategist';
+                    credibility = 'campaigns across industries';
+                    perspective = 'data-driven insights';
+                } else if (topicLower.includes('pastry') || topicLower.includes('culinary') || topicLower.includes('food')) {
+                    expertType = 'culinary business consultant';
+                    credibility = 'restaurant operations and trends';
+                    perspective = 'industry insights';
+                } else if (topicLower.includes('education') || topicLower.includes('school')) {
+                    expertType = 'education consultant';
+                    credibility = 'institutional transformations';
+                    perspective = 'systemic insights';
+                } else if (topicLower.includes('tech') || topicLower.includes('software') || topicLower.includes('ai')) {
+                    expertType = 'technology strategist';
+                    credibility = 'digital transformations';
+                    perspective = 'innovation insights';
+                }
+                
+                return {
+                    type: expertType,
+                    credibility,
+                    perspective,
+                    specialization,
+                    voice: this.getExpertVoice(expertType)
+                };
+            }
+
+            getExpertVoice(expertType) {
+                const voices = {
+                    'medical educator': 'analytical yet accessible',
+                    'healthcare strategist': 'systematic and evidence-focused',
+                    'marketing strategist': 'results-oriented and data-driven',
+                    'culinary business consultant': 'passionate yet practical',
+                    'education consultant': 'thoughtful and student-centered',
+                    'technology strategist': 'forward-thinking and pragmatic',
+                    'industry consultant': 'experienced and strategic'
+                };
+                
+                return voices[expertType] || voices['industry consultant'];
+            }
+
+            selectContentStrategy(tone) {
+                const strategies = {
+                    'conversational': 'story_with_lesson',
+                    'bold': 'contrarian_take',
+                    'actionable': 'framework_sharing',
+                    'visionary': 'trend_prediction',
+                    'professional': 'insight_analysis'
+                };
+                
+                return strategies[tone] || strategies['professional'];
+            }
+
+            generateExpertInsights(topic, expertProfile) {
+                // Generate insights that a real expert would share
+                const insights = {
+                    counterintuitive: this.generateCounterintuitiveInsight(topic, expertProfile),
+                    practical: this.generatePracticalInsight(topic, expertProfile),
+                    trend: this.generateTrendInsight(topic, expertProfile),
+                    mistake: this.generateCommonMistake(topic, expertProfile),
+                    opportunity: this.generateOpportunityInsight(topic, expertProfile)
+                };
+                
+                return insights;
+            }
+
+            generateCounterintuitiveInsight(topic, expertProfile) {
+                const patterns = [
+                    `Most people think ${topic} success comes from perfection, but I've seen the opposite`,
+                    `The biggest ${topic} breakthroughs happen when you stop following best practices`,
+                    `Everyone focuses on the obvious ${topic} metrics, but the real indicator is something else entirely`,
+                    `The ${topic} advice everyone gives actually prevents success in most cases`,
+                    `What looks like failure in ${topic} is often the setup for breakthrough success`
+                ];
+                
+                return patterns[Math.floor(Math.random() * patterns.length)];
+            }
+
+            generatePracticalInsight(topic, expertProfile) {
+                const patterns = [
+                    `The 3 ${topic} fundamentals I wish someone had taught me earlier`,
+                    `Here's what actually moves the needle in ${topic} (from analyzing 100+ cases)`,
+                    `The ${topic} framework I use with every client - it works every time`,
+                    `5 minutes of this ${topic} practice beats hours of everything else`,
+                    `The ${topic} question that reveals everything about potential success`
+                ];
+                
+                return patterns[Math.floor(Math.random() * patterns.length)];
+            }
+
+            generateTrendInsight(topic, expertProfile) {
+                const patterns = [
+                    `The ${topic} shift happening right now that most people are missing`,
+                    `Why ${topic} in 2025 will look nothing like today`,
+                    `The ${topic} trend that's about to change everything`,
+                    `3 ${topic} predictions that will sound crazy today but obvious tomorrow`,
+                    `The quiet ${topic} revolution that's already started`
+                ];
+                
+                return patterns[Math.floor(Math.random() * patterns.length)];
+            }
+
+            generateCommonMistake(topic, expertProfile) {
+                const patterns = [
+                    `The ${topic} mistake I see in 90% of cases`,
+                    `Why most ${topic} efforts fail (and how to avoid it)`,
+                    `The ${topic} assumption that destroys results`,
+                    `What everyone gets wrong about ${topic}`,
+                    `The ${topic} trap that catches even experienced professionals`
+                ];
+                
+                return patterns[Math.floor(Math.random() * patterns.length)];
+            }
+
+            generateOpportunityInsight(topic, expertProfile) {
+                const patterns = [
+                    `The ${topic} opportunity hiding in plain sight`,
+                    `Why now is the perfect time for ${topic} transformation`,
+                    `The ${topic} competitive advantage most people ignore`,
+                    `How to turn ${topic} challenges into unfair advantages`,
+                    `The ${topic} goldmine that everyone overlooks`
+                ];
+                
+                return patterns[Math.floor(Math.random() * patterns.length)];
+            }
+
+            craftExpertPost(topic, audience, expertProfile, contentStrategy, insights) {
+                let content = '';
+                
+                // Select the right insight based on strategy
+                let selectedInsight;
+                let contentStructure;
+                
+                switch(contentStrategy) {
+                    case 'story_with_lesson':
+                        selectedInsight = insights.practical;
+                        contentStructure = this.createStoryStructure(topic, audience, expertProfile, selectedInsight);
+                        break;
+                    case 'contrarian_take':
+                        selectedInsight = insights.counterintuitive;
+                        contentStructure = this.createContrarianeStructure(topic, audience, expertProfile, selectedInsight);
+                        break;
+                    case 'framework_sharing':
+                        selectedInsight = insights.practical;
+                        contentStructure = this.createFrameworkStructure(topic, audience, expertProfile, selectedInsight);
+                        break;
+                    case 'trend_prediction':
+                        selectedInsight = insights.trend;
+                        contentStructure = this.createTrendStructure(topic, audience, expertProfile, selectedInsight);
+                        break;
+                    default:
+                        selectedInsight = insights.opportunity;
+                        contentStructure = this.createInsightStructure(topic, audience, expertProfile, selectedInsight);
+                }
+                
+                // Build the post
+                content = contentStructure.opening + '\n\n' + 
+                         contentStructure.body + '\n\n' + 
+                         contentStructure.insight + '\n\n' + 
+                         contentStructure.callToAction + '\n\n' + 
+                         this.generateRelevantHashtags(topic, expertProfile);
+                
+                return content;
+            }
+
+            createStoryStructure(topic, audience, expertProfile, insight) {
+                const scenarios = [
+                    {
+                        opening: `Last week, I watched a ${this.getAudienceMember(audience)} completely transform their approach to ${topic}.`,
+                        body: `They started with a simple question: "What if everything we know about ${topic} is backwards?" Instead of following the usual playbook, they tried something different. The results surprised everyone - including me.`,
+                        insight: `Here's what I learned: ${insight.toLowerCase()}. Sometimes the biggest breakthroughs come from questioning the fundamentals.`,
+                        callToAction: `What assumptions about ${topic} are you ready to challenge?`
+                    },
+                    {
+                        opening: `A ${this.getAudienceMember(audience)} asked me something yesterday that I can't stop thinking about.`,
+                        body: `"Why does everyone make ${topic} so complicated?" They were right. I've seen teams spend months on complex ${topic} strategies when simple approaches work better. The industry creates complexity where clarity is needed.`,
+                        insight: `The truth: ${insight.toLowerCase()}. Complexity is often a symptom of unclear thinking.`,
+                        callToAction: `How are you simplifying your approach to ${topic}?`
+                    },
+                    {
+                        opening: `I just saw the most interesting ${topic} case study unfold in real time.`,
+                        body: `A team took everything conventional wisdom says about ${topic} and flipped it. Instead of following best practices, they focused on first principles. The outcome? They achieved in 3 months what typically takes a year.`,
+                        insight: `The lesson: ${insight.toLowerCase()}. First principles thinking beats best practices every time.`,
+                        callToAction: `What first principles guide your ${topic} decisions?`
+                    }
+                ];
+                
+                return scenarios[Math.floor(Math.random() * scenarios.length)];
+            }
+
+            createContrarianeStructure(topic, audience, expertProfile, insight) {
+                const takes = [
+                    {
+                        opening: `Unpopular opinion: Most ${topic} advice is counterproductive.`,
+                        body: `${insight}. I've analyzed hundreds of ${topic} cases, and the pattern is clear: the conventional approach creates more problems than it solves. The organizations winning right now are doing the opposite of what everyone recommends.`,
+                        insight: `The truth is uncomfortable but simple: success in ${topic} requires unlearning most of what you've been taught.`,
+                        callToAction: `What ${topic} "best practice" are you ready to abandon?`
+                    },
+                    {
+                        opening: `Hot take: The ${topic} industry has been giving backwards advice for years.`,
+                        body: `${insight}. While everyone focuses on optimization, the real winners are focused on something completely different. They're not playing the same game - they're playing a better game.`,
+                        insight: `The competitive advantage isn't better execution of standard practices - it's executing entirely different practices.`,
+                        callToAction: `What game are you playing in ${topic}?`
+                    },
+                    {
+                        opening: `Controversial thought: ${insight}.`,
+                        body: `I know this sounds backwards, but I've seen it proven repeatedly. The ${audience} who embrace this counter-intuitive approach consistently outperform those following conventional wisdom. The gap isn't small - it's dramatic.`,
+                        insight: `Sometimes the best strategy is the one that sounds wrong to everyone else.`,
+                        callToAction: `What would you do differently if conventional wisdom was wrong?`
+                    }
+                ];
+                
+                return takes[Math.floor(Math.random() * takes.length)];
+            }
+
+            createFrameworkStructure(topic, audience, expertProfile, insight) {
+                const frameworks = [
+                    {
+                        opening: `${insight}:`,
+                        body: `1. Start with the end in mind - what does success actually look like?\n2. Identify the constraint - what's really holding you back?\n3. Test the minimum viable change - what's the smallest thing you can try?\n4. Measure what matters - ignore vanity metrics\n5. Scale what works - double down on proven approaches`,
+                        insight: `This framework works because it forces clarity over complexity. Most ${topic} failures happen because people skip step 1.`,
+                        callToAction: `Which step are you missing in your ${topic} approach?`
+                    },
+                    {
+                        opening: `After working with hundreds of ${audience}, I've identified the ${topic} pattern that actually works:`,
+                        body: `→ Map the current reality (most people skip this)\n→ Define the specific outcome you need\n→ Find the biggest leverage point\n→ Test small, iterate fast\n→ Scale gradually, measure constantly`,
+                        insight: `${insight}. The difference between success and failure is often execution of fundamentals, not access to advanced techniques.`,
+                        callToAction: `What's your biggest leverage point in ${topic} right now?`
+                    },
+                    {
+                        opening: `The ${topic} framework I use with every client:`,
+                        body: `Phase 1: Audit your current approach honestly\nPhase 2: Identify the 20% that drives 80% of results\nPhase 3: Eliminate everything else\nPhase 4: Optimize the 20% relentlessly\nPhase 5: Scale only what's proven`,
+                        insight: `Simple? Yes. Easy? No. But it works because ${insight.toLowerCase()}.`,
+                        callToAction: `What would you eliminate from your ${topic} approach if you were ruthlessly honest?`
+                    }
+                ];
+                
+                return frameworks[Math.floor(Math.random() * frameworks.length)];
+            }
+
+            createTrendStructure(topic, audience, expertProfile, insight) {
+                const trends = [
+                    {
+                        opening: `${insight}.`,
+                        body: `While everyone's focused on today's challenges, smart ${audience} are already adapting to tomorrow's reality. The shift is subtle but significant - and it's accelerating. Those who see it early have an insurmountable advantage.`,
+                        insight: `The future belongs to those who act on trends before they become obvious to everyone else.`,
+                        callToAction: `How are you preparing for the future of ${topic}?`
+                    },
+                    {
+                        opening: `The ${topic} landscape is shifting in a way most people aren't seeing yet.`,
+                        body: `${insight}. I'm seeing early signals everywhere - in client conversations, industry data, and successful case studies. The organizations that adapt first will dominate the next decade.`,
+                        insight: `Change creates opportunity, but only for those who recognize it early and act decisively.`,
+                        callToAction: `What signals are you seeing in ${topic}?`
+                    },
+                    {
+                        opening: `Prediction: ${insight}.`,
+                        body: `The evidence is everywhere if you know where to look. Leading ${audience} are already making moves that seem premature today but will look prescient tomorrow. The competitive landscape is about to change dramatically.`,
+                        insight: `The best time to adapt to change is before everyone else realizes change is necessary.`,
+                        callToAction: `What would you do differently if you knew this trend was certain?`
+                    }
+                ];
+                
+                return trends[Math.floor(Math.random() * trends.length)];
+            }
+
+            createInsightStructure(topic, audience, expertProfile, insight) {
+                const insights = [
+                    {
+                        opening: `I've been analyzing ${topic} patterns for years, and one thing keeps standing out.`,
+                        body: `${insight}. The data is consistent across industries and contexts. Yet most ${audience} are completely missing it. They're optimizing for the wrong metrics and solving the wrong problems.`,
+                        insight: `The biggest opportunities are often hiding in plain sight, disguised as things everyone already knows but no one acts on.`,
+                        callToAction: `What obvious opportunity are you overlooking in ${topic}?`
+                    },
+                    {
+                        opening: `After working with ${audience} across different industries, I've noticed something interesting.`,
+                        body: `${insight}. The pattern is so consistent it's almost mathematical. The organizations that embrace this insight dramatically outperform those that ignore it. Yet it remains surprisingly underutilized.`,
+                        insight: `Sometimes the most powerful strategies are the ones that seem too simple to work.`,
+                        callToAction: `How could you apply this insight to your ${topic} challenges?`
+                    },
+                    {
+                        opening: `Here's what I've learned from analyzing hundreds of ${topic} cases:`,
+                        body: `${insight}. This insight explains why some ${audience} consistently succeed while others struggle with the same challenges. It's not about having better resources or more experience - it's about seeing the game differently.`,
+                        insight: `Perspective often matters more than resources when it comes to breakthrough results.`,
+                        callToAction: `What perspective shift could transform your approach to ${topic}?`
+                    }
+                ];
+                
+                return insights[Math.floor(Math.random() * insights.length)];
+            }
+
+            getAudienceMember(audience) {
+                const audienceLower = audience.toLowerCase();
+                
+                if (audienceLower.includes('student')) return 'student';
+                if (audienceLower.includes('founder') || audienceLower.includes('ceo')) return 'founder';
+                if (audienceLower.includes('marketing')) return 'marketing director';
+                if (audienceLower.includes('sales')) return 'sales manager';
+                if (audienceLower.includes('developer') || audienceLower.includes('engineer')) return 'developer';
+                if (audienceLower.includes('consultant')) return 'consultant';
+                if (audienceLower.includes('manager')) return 'team manager';
+                if (audienceLower.includes('chef') || audienceLower.includes('culinary')) return 'chef';
+                if (audienceLower.includes('doctor') || audienceLower.includes('physician')) return 'physician';
+                
+                return 'professional';
+            }
+
+            generateRelevantHashtags(topic, expertProfile) {
+                const topicWords = topic.split(' ');
+                const primaryHashtag = '#' + topicWords.map(word => 
+                    word.charAt(0).toUpperCase() + word.slice(1)
+                ).join('');
+                
+                const expertHashtags = {
+                    'medical educator': ['#MedicalEducation', '#Healthcare', '#MedicalTraining'],
+                    'healthcare strategist': ['#Healthcare', '#HealthTech', '#PatientCare'],
+                    'marketing strategist': ['#Marketing', '#Strategy', '#GrowthHacking'],
+                    'culinary business consultant': ['#FoodBusiness', '#Hospitality', '#CulinaryArts'],
+                    'education consultant': ['#Education', '#Learning', '#EdTech'],
+                    'technology strategist': ['#Technology', '#Innovation', '#DigitalTransformation'],
+                    'industry consultant': ['#Business', '#Strategy', '#Leadership']
+                };
+                
+                const expertTags = expertHashtags[expertProfile.type] || expertHashtags['industry consultant'];
+                const commonTags = ['#Leadership', '#Success', '#Growth'];
+                
+                const allTags = [primaryHashtag, ...expertTags, ...commonTags];
+                const uniqueTags = [...new Set(allTags)].slice(0, 5);
+                
+                return uniqueTags.join(' ');
+            }
+
+            analyzeAudience(audience) {
+                const audienceLower = audience.toLowerCase();
+                
+                let painPoints = [];
+                let goals = [];
+                let language = 'professional';
+                let priorities = [];
+                
+                if (audienceLower.includes('student') || audienceLower.includes('learner')) {
+                    painPoints = ['limited time', 'financial constraints', 'uncertainty about future', 'information overload'];
+                    goals = ['academic success', 'career preparation', 'skill development', 'networking'];
+                    language = 'motivational';
+                    priorities = ['learning', 'growth', 'opportunity'];
+                } else if (audienceLower.includes('founder') || audienceLower.includes('entrepreneur') || audienceLower.includes('startup')) {
+                    painPoints = ['limited resources', 'market uncertainty', 'scaling challenges', 'decision fatigue'];
+                    goals = ['growth', 'sustainability', 'market fit', 'team building'];
+                    language = 'direct';
+                    priorities = ['results', 'efficiency', 'innovation'];
+                } else if (audienceLower.includes('manager') || audienceLower.includes('director') || audienceLower.includes('executive')) {
+                    painPoints = ['team alignment', 'resource allocation', 'performance metrics', 'stakeholder expectations'];
+                    goals = ['team success', 'organizational growth', 'strategic execution', 'leadership development'];
+                    language = 'strategic';
+                    priorities = ['leadership', 'results', 'strategy'];
+                } else {
+                    painPoints = ['time constraints', 'resource limitations', 'changing requirements', 'competition'];
+                    goals = ['professional growth', 'better results', 'efficiency', 'recognition'];
+                    language = 'professional';
+                    priorities = ['success', 'improvement', 'growth'];
+                }
+                
+                return {
+                    original: audience,
+                    painPoints,
+                    goals,
+                    language,
+                    priorities
+                };
+            }
+
+            selectContentStyle(tone) {
+                const toneLower = tone.toLowerCase();
+                
+                if (toneLower.includes('conversational') || toneLower.includes('personal')) {
+                    return {
+                        approach: 'story',
+                        opener: 'personal experience',
+                        structure: 'narrative',
+                        callToAction: 'question'
+                    };
+                } else if (toneLower.includes('bold') || toneLower.includes('controversial')) {
+                    return {
+                        approach: 'challenge',
+                        opener: 'contrarian statement',
+                        structure: 'argument',
+                        callToAction: 'debate'
+                    };
+                } else if (toneLower.includes('actionable') || toneLower.includes('practical')) {
+                    return {
+                        approach: 'framework',
+                        opener: 'practical insight',
+                        structure: 'steps',
+                        callToAction: 'implementation'
+                    };
+                } else if (toneLower.includes('visionary') || toneLower.includes('future')) {
+                    return {
+                        approach: 'prediction',
+                        opener: 'future insight',
+                        structure: 'vision',
+                        callToAction: 'preparation'
+                    };
+                } else {
+                    return {
+                        approach: 'insight',
+                        opener: 'observation',
+                        structure: 'analysis',
+                        callToAction: 'reflection'
+                    };
+                }
+            }
+
+            createOriginalContent(topicAnalysis, audienceInsights, contentStyle) {
+                const { original: topic, category, keywords, challenges, opportunities, context } = topicAnalysis;
+                const { original: audience, painPoints, goals, priorities } = audienceInsights;
+                const { approach, opener, structure, callToAction } = contentStyle;
+                
+                let content = '';
+                
+                // Generate unique opening based on topic and style
+                content += this.generateOpening(topic, category, opener, context);
+                content += '\n\n';
+                
+                // Generate body content based on structure and topic analysis
+                content += this.generateBodyContent(topic, category, keywords, challenges, opportunities, painPoints, goals, structure);
+                content += '\n\n';
+                
+                // Generate insights specific to the topic
+                content += this.generateTopicInsight(topic, category, priorities);
+                content += '\n\n';
+                
+                // Generate call to action
+                content += this.generateCallToAction(topic, audience, callToAction);
+                content += '\n\n';
+                
+                // Generate relevant hashtags
+                content += this.generateContextualHashtags(topic, category, keywords);
+                
+                return content;
+            }
+
+            generateOpening(topic, category, opener, context) {
+                const openingVariations = {
+                    'personal experience': [
+                        `I've been thinking a lot about ${topic} lately.`,
+                        `Something interesting happened in the ${context} this week.`,
+                        `A conversation about ${topic} caught me off guard yesterday.`,
+                        `I just witnessed something fascinating in ${topic}.`
+                    ],
+                    'contrarian statement': [
+                        `Unpopular opinion: Most people are approaching ${topic} completely wrong.`,
+                        `Hot take: The conventional wisdom about ${topic} is outdated.`,
+                        `Controversial thought: ${topic} isn't the solution everyone thinks it is.`,
+                        `Hard truth: The ${topic} industry has a major blind spot.`
+                    ],
+                    'practical insight': [
+                        `After analyzing hundreds of ${topic} cases, one pattern stands out.`,
+                        `The most successful ${topic} initiatives share a common trait.`,
+                        `Here's what actually works in ${topic} (and what doesn't).`,
+                        `Three lessons from ${topic} that changed my perspective.`
+                    ],
+                    'future insight': [
+                        `The future of ${topic} isn't what most people expect.`,
+                        `In 5 years, ${topic} will look completely different.`,
+                        `The ${topic} revolution is happening in unexpected places.`,
+                        `What if everything we know about ${topic} is about to change?`
+                    ],
+                    'observation': [
+                        `I've noticed something interesting about ${topic}.`,
+                        `The best ${topic} practitioners do something differently.`,
+                        `There's a hidden pattern in successful ${topic} stories.`,
+                        `The ${topic} landscape is shifting in a subtle but important way.`
+                    ]
+                };
+                
+                const options = openingVariations[opener] || openingVariations['observation'];
+                return options[Math.floor(Math.random() * options.length)];
+            }
+
+            generateBodyContent(topic, category, keywords, challenges, opportunities, painPoints, goals, structure) {
+                const challenge = challenges[Math.floor(Math.random() * challenges.length)];
+                const opportunity = opportunities[Math.floor(Math.random() * opportunities.length)];
+                const painPoint = painPoints[Math.floor(Math.random() * painPoints.length)];
+                const keyword = keywords[Math.floor(Math.random() * keywords.length)];
+                
+                const contentVariations = {
+                    'narrative': [
+                        `I met someone who transformed their entire approach to ${topic}. They were struggling with ${challenge}, like so many others. But instead of following conventional advice, they focused on ${keyword}. The result? They turned ${painPoint} into their biggest advantage and created ${opportunity} for their entire organization.`,
+                        
+                        `Last month, I watched a team completely reimagine their ${topic} strategy. The breakthrough came when they stopped worrying about ${challenge} and started focusing on what really mattered: ${keyword}. Sometimes the biggest wins come from the simplest shifts in perspective.`,
+                        
+                        `A client recently told me something that stuck: "We spent so much time trying to solve ${challenge} that we missed the real opportunity." They were right. The moment they shifted focus to ${keyword}, everything changed. Now they're leading in ${opportunity} while others are still stuck on the problem.`
+                    ],
+                    'argument': [
+                        `Everyone's focused on ${challenge}, but that's not the real issue. The real issue is that we're ignoring ${keyword}. While competitors waste time on symptoms, smart organizations are building advantages through ${opportunity}. The gap is only getting wider.`,
+                        
+                        `The ${topic} industry is solving the wrong problem. We're obsessed with ${challenge} when we should be obsessed with ${keyword}. This misalignment is creating massive opportunities for those who see it clearly. ${opportunity} isn't just possible - it's inevitable for those who act now.`,
+                        
+                        `Here's what nobody wants to admit about ${topic}: focusing on ${challenge} is a distraction. The organizations winning right now aren't the ones with the best solutions to old problems - they're the ones who redefined the game around ${keyword}. They're capturing ${opportunity} while others are still fighting yesterday's battles.`
+                    ],
+                    'steps': [
+                        `Here's the framework that actually works:\n\n1. Stop trying to solve ${challenge} with more complexity\n2. Focus ruthlessly on ${keyword}\n3. Turn ${painPoint} into a competitive advantage\n4. Build systems that create ${opportunity}\n5. Scale what works, eliminate what doesn't\n\nSimple? Yes. Easy? No. But it works.`,
+                        
+                        `The ${topic} approach that consistently delivers results:\n\n→ Identify where ${challenge} is really coming from\n→ Design solutions around ${keyword}\n→ Address ${painPoint} systematically\n→ Create sustainable ${opportunity}\n→ Measure what matters, not what's easy\n\nMost people skip step 1. Don't be most people.`,
+                        
+                        `Every successful ${topic} initiative follows this pattern:\n\n• Start with understanding ${painPoint}\n• Focus on ${keyword} as the solution\n• Turn ${challenge} from a barrier into an advantage\n• Build toward ${opportunity}\n• Scale through systems, not heroics\n\nThe order matters more than you think.`
+                    ],
+                    'vision': [
+                        `In the next decade, ${topic} will be defined by ${keyword}, not ${challenge}. Organizations building around this shift will create unprecedented ${opportunity}. Those stuck on old problems will find themselves irrelevant. The transition is already beginning - the question is where you'll be when it accelerates.`,
+                        
+                        `The future belongs to those who see ${topic} differently. While others struggle with ${challenge}, visionary leaders are building the next generation around ${keyword}. They're not just solving today's problems - they're creating tomorrow's ${opportunity}. The competitive gap will be insurmountable.`,
+                        
+                        `Imagine ${topic} where ${challenge} is no longer the constraint. Where ${keyword} drives every decision. Where ${opportunity} is the norm, not the exception. This isn't fantasy - it's the inevitable future for organizations bold enough to build it. The question isn't if, but how quickly you'll adapt.`
+                    ],
+                    'analysis': [
+                        `The data is clear: organizations succeeding in ${topic} share a common focus on ${keyword}. They've stopped treating ${challenge} as unchangeable and started building systems that create ${opportunity}. Meanwhile, their competitors remain stuck addressing ${painPoint} with outdated approaches. The performance gap continues to widen.`,
+                        
+                        `After studying hundreds of ${topic} implementations, the pattern is obvious. Success correlates directly with emphasis on ${keyword} over traditional ${challenge}-focused approaches. The winners understand that ${painPoint} is a symptom, not the disease. They're building sustainable ${opportunity} while others fight fires.`,
+                        
+                        `The most revealing insight about ${topic}? High performers don't just solve ${challenge} - they make it irrelevant through ${keyword}. They've realized that addressing ${painPoint} symptomatically is a losing game. Instead, they're creating conditions for ${opportunity} to emerge naturally. The difference in outcomes is dramatic.`
+                    ]
+                };
+                
+                const options = contentVariations[structure] || contentVariations['analysis'];
+                return options[Math.floor(Math.random() * options.length)];
+            }
+
+            generateTopicInsight(topic, category, priorities) {
+                const priority = priorities[Math.floor(Math.random() * priorities.length)];
+                
+                const insights = {
+                    'education': [
+                        `The best ${topic} experiences prioritize ${priority} over everything else.`,
+                        `Success in ${topic} isn't about perfection - it's about consistent ${priority}.`,
+                        `The ${topic} journey is different for everyone, but ${priority} is universal.`
+                    ],
+                    'business': [
+                        `In ${topic}, ${priority} beats optimization every time.`,
+                        `The companies winning at ${topic} obsess over ${priority}, not tactics.`,
+                        `${topic} is complex, but the principle is simple: ${priority} first.`
+                    ],
+                    'technology': [
+                        `Technology changes, but the need for ${priority} in ${topic} remains constant.`,
+                        `The most innovative ${topic} solutions prioritize ${priority} over features.`,
+                        `In ${topic}, technical excellence means nothing without ${priority}.`
+                    ],
+                    'hospitality': [
+                        `Great ${topic} experiences are built on ${priority}, not perfection.`,
+                        `In ${topic}, people remember how you made them feel about ${priority}.`,
+                        `The secret to ${topic} success? Obsess over ${priority}, everything else follows.`
+                    ],
+                    'healthcare': [
+                        `In ${topic}, ${priority} is the only metric that truly matters.`,
+                        `The best ${topic} providers understand that ${priority} drives everything.`,
+                        `${topic} is about people, and people need ${priority} above all else.`
+                    ],
+                    'general': [
+                        `Success in ${topic} comes down to one thing: relentless focus on ${priority}.`,
+                        `The ${topic} landscape is complex, but the principle is simple: ${priority} first.`,
+                        `Every great ${topic} story starts with a commitment to ${priority}.`
+                    ]
+                };
+                
+                const categoryInsights = insights[category] || insights['general'];
+                return categoryInsights[Math.floor(Math.random() * categoryInsights.length)];
+            }
+
+            generateCallToAction(topic, audience, callToAction) {
+                const callToActionVariations = {
+                    'question': [
+                        `What's your experience with ${topic}? What would you add?`,
+                        `How are you approaching ${topic} differently this year?`,
+                        `What's working (or not working) in your ${topic} journey?`,
+                        `${audience}, what's your biggest challenge with ${topic} right now?`
+                    ],
+                    'debate': [
+                        `Am I missing something here?`,
+                        `Change my mind in the comments.`,
+                        `What's your contrarian take on ${topic}?`,
+                        `Too harsh? Too soft? What's your view?`
+                    ],
+                    'implementation': [
+                        `What's the first step you'll take this week?`,
+                        `Which part of this will you implement first?`,
+                        `How will you adapt this for your ${topic} context?`,
+                        `What would success look like for your ${topic} initiative?`
+                    ],
+                    'preparation': [
+                        `How are you preparing for the future of ${topic}?`,
+                        `What skills are you building for tomorrow's ${topic} landscape?`,
+                        `Where do you see ${topic} heading in the next 5 years?`,
+                        `What would you do differently if you started your ${topic} journey today?`
+                    ],
+                    'reflection': [
+                        `What resonates most with your ${topic} experience?`,
+                        `How does this align with what you're seeing in ${topic}?`,
+                        `What patterns are you noticing in ${topic}?`,
+                        `Where are you focusing your ${topic} efforts this year?`
+                    ]
+                };
+                
+                const options = callToActionVariations[callToAction] || callToActionVariations['reflection'];
+                return options[Math.floor(Math.random() * options.length)];
+            }
+
+            generateContextualHashtags(topic, category, keywords) {
+                const topicHashtag = this.topicToHashtag(topic);
+                const keywordHashtags = keywords.slice(0, 2).map(k => '#' + k.charAt(0).toUpperCase() + k.slice(1));
+                
+                const categoryHashtags = {
+                    'education': ['#Learning', '#Education', '#Growth'],
+                    'business': ['#Business', '#Strategy', '#Leadership'],
+                    'technology': ['#Technology', '#Innovation', '#Digital'],
+                    'hospitality': ['#Hospitality', '#CustomerExperience', '#Service'],
+                    'healthcare': ['#Healthcare', '#Wellness', '#Care'],
+                    'general': ['#Leadership', '#Success', '#Growth']
+                };
+                
+                const baseHashtags = categoryHashtags[category] || categoryHashtags['general'];
+                const allHashtags = [topicHashtag, ...keywordHashtags, ...baseHashtags];
+                
+                // Remove duplicates and limit to 5 hashtags
+                const uniqueHashtags = [...new Set(allHashtags)].slice(0, 5);
+                return uniqueHashtags.join(' ');
+            }
+
+            buildContentFromStructure(structure, topic, audience, tone) {
+                const parts = [];
+                
+                // Build content by randomly selecting from each part of the structure
+                for (const [partName, options] of Object.entries(structure)) {
+                    const selectedOption = options[Math.floor(Math.random() * options.length)];
+                    parts.push(selectedOption);
+                }
+                
+                // Join the parts with appropriate spacing
+                let content = parts.join('\n\n');
+                
+                // Replace placeholders with actual values
+                content = this.replacePlaceholders(content, topic, audience);
+                
+                // Add relevant hashtags
+                content += `\n\n${this.generateHashtags(topic, tone)}`;
+                
+                return content;
+            }
+
+            replacePlaceholders(content, topic, audience) {
+                // Get an audience member type
+                const audienceMember = this.getAudienceMember(audience);
+                
+                return content
+                    .replace(/\{topic\}/g, topic)
+                    .replace(/\{audience\}/g, audience)
+                    .replace(/\{audience_member\}/g, audienceMember);
+            }
+
+            getAudienceMember(audience) {
+                const audienceLower = audience.toLowerCase();
+                
+                if (audienceLower.includes('founder') || audienceLower.includes('ceo') || audienceLower.includes('executive')) {
+                    return 'founder';
+                } else if (audienceLower.includes('marketer') || audienceLower.includes('marketing')) {
+                    return 'marketing director';
+                } else if (audienceLower.includes('developer') || audienceLower.includes('engineer')) {
+                    return 'developer';
+                } else if (audienceLower.includes('sales')) {
+                    return 'sales manager';
+                } else if (audienceLower.includes('consultant')) {
+                    return 'consultant';
+                } else if (audienceLower.includes('manager')) {
+                    return 'manager';
+                } else {
+                    return 'leader';
+                }
+            }
+
+            generateHashtags(topic, tone) {
+                const topicHashtag = this.topicToHashtag(topic);
+                const baseHashtags = ['#Leadership', '#Strategy', '#Business'];
+                
+                // Add tone-specific hashtags
+                const toneHashtags = {
+                    'professional': ['#Innovation', '#Growth'],
+                    'conversational': ['#Insights', '#Experience'], 
+                    'bold': ['#Disruption', '#Change'],
+                    'actionable': ['#Implementation', '#Results'],
+                    'visionary': ['#Future', '#Transformation']
+                };
+                
+                const selectedToneHashtags = toneHashtags[tone] || toneHashtags.professional;
+                
+                return [topicHashtag, ...selectedToneHashtags, ...baseHashtags].slice(0, 5).join(' ');
+            }
+
+            selectStructureCategory(tone) {
+                const toneLower = tone.toLowerCase();
+                
+                // Map tones to structure categories
+                if (toneLower.includes('bold') || toneLower.includes('controversial') || toneLower.includes('provocative')) {
+                    return 'controversial';
+                } else if (toneLower.includes('conversational') || toneLower.includes('personal') || toneLower.includes('authentic')) {
+                    return 'personalStory';
+                } else if (toneLower.includes('actionable') || toneLower.includes('practical') || toneLower.includes('tactical')) {
+                    return 'practical';
+                } else if (toneLower.includes('visionary') || toneLower.includes('future')) {
+                    return 'future';
+                } else {
+                    // Default to insights for professional tone
+                    return 'insights';
+                }
+            }
+
+            topicToHashtag(topic) {
+                return '#' + topic
+                    .split(' ')
+                    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join('');
+            }
+
+            async generateMultiplePosts(options = {}) {
+                const count = options.count || 5;
+                const topic = options.topic || document.getElementById('custom-topic')?.value || 'AI transformation';
+                const audience = options.audience || document.getElementById('custom-audience')?.value || 'business leaders';
+                const tone = options.tone || document.getElementById('custom-tone')?.value || 'professional';
+
+                console.log('🔥 Generating multiple posts...', { count, topic, audience, tone });
+
+                try {
+                    showToast('Generating 5 unique posts...', 'info');
+
+                    const posts = [];
+                    const categories = Object.keys(this.templates);
+                    
+                    // Use different approaches for variety
+                    const approaches = [
+                        { category: 'personalStory', toneVariant: 'conversational' },
+                        { category: 'insights', toneVariant: 'professional' },
+                        { category: 'controversial', toneVariant: 'bold' },
+                        { category: 'practical', toneVariant: 'actionable' },
+                        { category: 'future', toneVariant: 'visionary' }
+                    ];
+
+                    for (let i = 0; i < count; i++) {
+                        const approach = approaches[i] || approaches[i % approaches.length];
+                        
+                        const post = await this.generatePost({
+                            topic,
+                            audience,
+                            tone: approach.toneVariant
+                        });
+
+                        if (post.success) {
+                            // Override the generated post with approach-specific content
+                            const content = this.generateCategorySpecificContent(approach.category, topic, audience, approach.toneVariant);
+                            post.post.content = content;
+                            post.post.approach = approach.category;
+                            posts.push(post.post);
+                        }
+
+                        // Show progress
+                        showToast(`Generated post ${i + 1} of ${count}`, 'success', 1000);
+                        
+                        // Small delay to show progress
+                        await new Promise(resolve => setTimeout(resolve, 300));
+                    }
+
+                    this.generatedPosts = posts;
+                    this.displayMultiplePosts(posts);
+                    this.trackUsage('multiple_posts_generated', { count: posts.length });
+
+                    console.log('✅ Multiple posts generated successfully:', posts.length);
+                    showToast(`Successfully generated ${posts.length} posts!`, 'success');
+                    
+                    return { success: true, posts, count: posts.length };
+
+                } catch (error) {
+                    console.error('❌ Error generating multiple posts:', error);
+                    showToast('Failed to generate multiple posts', 'error');
+                    return { success: false, error: error.message };
+                }
+            }
+
+            generateCategorySpecificContent(category, topic, audience, tone) {
+                const templates = this.templates[category];
+                if (!templates || templates.length === 0) {
+                    return this.generateIntelligentContent(topic, audience, tone);
+                }
+                
+                const template = templates[Math.floor(Math.random() * templates.length)];
+                return this.adaptContentToContext(template, topic, audience, tone);
+            }
+
+            displayGeneratedContent(content) {
+                const contentContainer = document.getElementById('generated-content');
+                const contentText = document.getElementById('content-text');
+                const charCount = document.getElementById('char-count');
+
+                if (contentContainer && contentText && charCount) {
+                    contentText.textContent = content;
+                    charCount.textContent = `Character count: ${content.length}`;
+                    contentContainer.classList.remove('hidden');
+                    
+                    // Hide multiple posts container when showing single post
+                    const multipleContainer = document.getElementById('multiple-posts-container');
+                    if (multipleContainer) {
+                        multipleContainer.classList.add('hidden');
+                    }
+                }
+            }
+
+            displayMultiplePosts(posts) {
+                const multipleContainer = document.getElementById('multiple-posts-container');
+                const postsList = document.getElementById('posts-list');
+                const postsCount = document.getElementById('posts-count');
+                
+                if (!multipleContainer || !postsList || !postsCount) return;
+
+                // Hide single post display
+                const singleContainer = document.getElementById('generated-content');
+                if (singleContainer) {
+                    singleContainer.classList.add('hidden');
+                }
+
+                // Update count
+                postsCount.textContent = posts.length;
+
+                // Generate posts HTML
+                postsList.innerHTML = posts.map((post, index) => `
+                    <div class="bg-slate-800/50 border border-slate-600 rounded-lg p-4">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-sm font-medium text-slate-300">Post ${index + 1}</span>
+                                <span class="text-xs px-2 py-1 bg-slate-600 text-slate-300 rounded-full">${post.approach || 'Generated'}</span>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button onclick="copyPost(${index})" class="text-blue-400 hover:text-blue-300 text-sm transition-colors" title="Copy this post">
+                                    📋 Copy
+                                </button>
+                                <button onclick="editPost(${index})" class="text-green-400 hover:text-green-300 text-sm transition-colors" title="Edit this post">
+                                    ✏️ Edit
+                                </button>
+                            </div>
+                        </div>
+                        <div class="text-slate-200 text-sm whitespace-pre-wrap mb-3 leading-relaxed">${post.content}</div>
+                        <div class="flex items-center justify-between">
+                            <div class="text-xs text-slate-400">${post.content.length} characters</div>
+                            <div class="text-xs text-slate-400">${new Date(post.createdAt).toLocaleTimeString()}</div>
+                        </div>
+                    </div>
+                `).join('');
+
+                // Show the container
+                multipleContainer.classList.remove('hidden');
+                
+                // Scroll to the posts
+                multipleContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+            trackUsage(event, data = {}) {
+                const usage = {
+                    event,
+                    timestamp: new Date().toISOString(),
+                    user: window.currentUser?.id,
+                    ...data
+                };
+                
+                const existingUsage = JSON.parse(localStorage.getItem('aifluence_usage') || '[]');
+                existingUsage.push(usage);
+                localStorage.setItem('aifluence_usage', JSON.stringify(existingUsage));
+                
+                console.log('📊 Usage tracked:', usage);
+            }
+
+            // RAG-Enhanced Content Generation Methods
+            async generateRAGContent(role, themeType, customFocus) {
+                console.log('🎯 Generating content with RAG intelligence...');
+                
+                try {
+                    // Get current trending topics from agent memory
+                    const cachedData = JSON.parse(localStorage.getItem('linkedin_rag_data') || '{}');
+                    const trendingTopics = cachedData.trendingTopics || [];
+                    
+                    let topic = customFocus;
+                    
+                    // If using trending topics, select the most relevant one for the role
+                    if (themeType === 'trending' && trendingTopics.length > 0) {
+                        topic = this.selectBestTrendForRole(role, trendingTopics);
+                    }
+                    
+                    // Use intelligent agent to generate contextual content
+                    if (this.intelligentAgent) {
+                        const intelligentContent = await this.intelligentAgent.generateIntelligentContent(role, topic, trendingTopics);
+                        return intelligentContent;
+                    }
+                    
+                    // Fallback to enhanced role-based generation with trending context
+                    return this.generateTrendAwareContent(role, topic, trendingTopics);
+                    
+                } catch (error) {
+                    console.error('⚠️ RAG generation failed, using fallback:', error);
+                    return this.generateRoleBasedContent(role, customFocus, 'professional insight');
+                }
+            }
+
+            selectBestTrendForRole(role, trends) {
+                const roleKeywords = {
+                    'ceo': ['leadership', 'strategy', 'market', 'transformation', 'vision'],
+                    'cto': ['technology', 'innovation', 'digital', 'AI', 'technical'],
+                    'marketing-manager': ['marketing', 'brand', 'customer', 'growth', 'engagement'],
+                    'product-manager': ['product', 'user', 'feature', 'development', 'strategy'],
+                    'sales-director': ['sales', 'revenue', 'client', 'relationship', 'growth'],
+                    'finance-professional': ['finance', 'investment', 'market', 'analysis', 'risk'],
+                    'data-scientist': ['data', 'analytics', 'insights', 'machine learning', 'AI']
+                };
+                
+                const keywords = roleKeywords[role] || roleKeywords['ceo'];
+                
+                // Find trend that best matches role keywords
+                const scoredTrends = trends.map(trend => ({
+                    ...trend,
+                    relevanceScore: keywords.reduce((score, keyword) => {
+                        return score + (trend.name.toLowerCase().includes(keyword.toLowerCase()) ? 1 : 0);
+                    }, 0)
+                }));
+                
+                scoredTrends.sort((a, b) => (b.relevanceScore * 10 + b.score) - (a.relevanceScore * 10 + a.score));
+                
+                return scoredTrends[0]?.name || trends[0]?.name || 'professional insights';
+            }
+
+            generateTrendAwareContent(role, topic, trends) {
+                const roleProfile = this.getRoleProfile(role);
+                const trendContext = trends.slice(0, 3).map(t => t.name).join(', ');
+                
+                const templates = [
+                    `The conversation around ${topic} has been fascinating lately. Based on what I'm seeing in my network, here's what ${roleProfile.audience} should know:`,
+                    `I've been tracking discussions on ${topic}, and there's a clear pattern emerging. For ${roleProfile.audience}, this means:`,
+                    `With ${trendContext} dominating professional discussions, I wanted to share my perspective on ${topic}:`,
+                    `The ${topic} landscape is evolving rapidly. Here's what I'm learning from recent industry conversations:`
+                ];
+                
+                const template = templates[Math.floor(Math.random() * templates.length)];
+                const insight = this.generateContextualInsight(topic, roleProfile);
+                const engagement = this.generateTrendBasedEngagement(topic, trends);
+                const hashtags = this.getRoleHashtags(roleProfile, topic);
+                
+                return `${template}\n\n${insight}\n\n${engagement}\n\n${hashtags}`;
+            }
+
+            generateContextualInsight(topic, roleProfile) {
+                const insights = [
+                    `Success in ${topic} isn't about following the crowd—it's about understanding what drives lasting ${roleProfile.expertise}.`,
+                    `The most effective ${roleProfile.audience} I know approach ${topic} with a ${roleProfile.voice} mindset that prioritizes ${roleProfile.themes[0]}.`,
+                    `After years of ${roleProfile.expertise}, I've learned that ${topic} success comes from focusing on ${roleProfile.themes[1]} rather than just tactics.`,
+                    `The breakthrough moment in ${topic} happens when you shift from ${this.getOldApproach(topic)} to ${this.getNewApproach(roleProfile, topic)}.`
+                ];
+                
+                return insights[Math.floor(Math.random() * insights.length)];
+            }
+
+            getOldApproach(topic) {
+                const oldApproaches = {
+                    'leadership': 'command-and-control',
+                    'innovation': 'technology-first thinking',
+                    'growth': 'traditional marketing',
+                    'strategy': 'rigid planning'
+                };
+                
+                const key = Object.keys(oldApproaches).find(k => topic.toLowerCase().includes(k));
+                return oldApproaches[key] || 'conventional thinking';
+            }
+
+            getNewApproach(roleProfile, topic) {
+                const newApproaches = {
+                    'strategic': 'adaptive leadership',
+                    'technical': 'human-centered innovation', 
+                    'engaging': 'community-driven growth',
+                    'analytical': 'data-informed strategy'
+                };
+                
+                return newApproaches[roleProfile.voice] || 'sustainable value creation';
+            }
+
+            generateTrendBasedEngagement(topic, trends) {
+                if (trends.length === 0) {
+                    return `What's your experience with ${topic}? I'd love to hear different perspectives.`;
+                }
+                
+                const topTrend = trends[0].name;
+                return `This is especially relevant as we see the intersection of ${topic} and ${topTrend}. How are you navigating these changes in your organization?`;
+            }
+
+            async updateRAGGeneration() {
+                // Update the existing generatePost method to use RAG when available
+                const originalGeneratePost = this.generatePost;
+                
+                this.generatePost = async function(options = {}) {
+                    const role = document.getElementById('professional-role')?.value || 'ceo';
+                    const themeType = document.getElementById('content-theme')?.value || 'trending'; 
+                    const customFocus = document.getElementById('content-focus')?.value || '';
+                    
+                    console.log('🚀 Generating RAG-enhanced LinkedIn post...', { role, themeType, customFocus });
+                    
+                    try {
+                        let content;
+                        
+                        // Check if LinkedIn RAG system is available and connected
+                        if (this.linkedinCollector && this.linkedinCollector.isConnected()) {
+                            content = await this.generateRAGContent(role, themeType, customFocus);
+                        } else {
+                            // Fallback to role-based generation
+                            const topic = customFocus || this.getDefaultFocus(role);
+                            content = this.generateRoleBasedContent(role, topic, 'professional insight');
+                        }
+                        
+                        this.currentPost = {
+                            id: 'post_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
+                            content,
+                            role,
+                            theme: themeType,
+                            focus: customFocus,
+                            createdAt: new Date().toISOString(),
+                            platform: 'linkedin',
+                            status: 'draft',
+                            ragEnhanced: this.linkedinCollector && this.linkedinCollector.isConnected()
+                        };
+                        
+                        this.displayGeneratedContent(content);
+                        this.trackUsage('post_generated', { ragEnhanced: this.currentPost.ragEnhanced });
+                        
+                        console.log('✅ RAG-enhanced post generated successfully');
+                        return { success: true, post: this.currentPost };
+                        
+                    } catch (error) {
+                        console.error('❌ Error generating RAG-enhanced post:', error);
+                        return { success: false, error: error.message };
+                    }
+                }.bind(this);
+            }
+        }
+
+        // LinkedIn Data Collector - Handles LinkedIn API integration
+        class LinkedInDataCollector {
+            constructor() {
+                this.connected = false;
+                this.accessToken = null;
+                this.lastFetchTime = null;
+            }
+
+            async connect() {
+                console.log('🔗 Simulating LinkedIn connection...');
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                this.connected = true;
+                this.accessToken = 'demo_access_token_' + Date.now();
+                return true;
+            }
+
+            isConnected() {
+                return this.connected;
+            }
+
+            async collectRecentPosts(daysBack = 3) {
+                if (!this.connected) {
+                    throw new Error('LinkedIn not connected');
+                }
+
+                console.log(`📊 Collecting posts from last ${daysBack} days...`);
+                const simulatedPosts = this.generateSimulatedLinkedInData();
+                this.lastFetchTime = new Date();
+                return simulatedPosts;
+            }
+
+            generateSimulatedLinkedInData() {
+                const topics = [
+                    'AI and automation', 'remote work', 'leadership lessons', 'market trends',
+                    'digital transformation', 'customer experience', 'data analytics', 'sustainability',
+                    'innovation strategies', 'team management', 'career development', 'industry insights'
+                ];
+
+                const posts = [];
+                
+                for (let i = 0; i < 50; i++) {
+                    const topic = topics[Math.floor(Math.random() * topics.length)];
+                    
+                    posts.push({
+                        id: `post_${i}`,
+                        author: `expert_${i}`,
+                        content: `Insights on ${topic}...`,
+                        topic: topic,
+                        engagement: {
+                            likes: Math.floor(Math.random() * 500) + 10,
+                            comments: Math.floor(Math.random() * 50) + 1,
+                            shares: Math.floor(Math.random() * 25)
+                        },
+                        timestamp: new Date(Date.now() - Math.random() * 3 * 24 * 60 * 60 * 1000),
+                        keywords: topic.split(' '),
+                        sentiment: Math.random() > 0.3 ? 'positive' : 'neutral'
+                    });
+                }
+
+                return posts;
+            }
+        }
+
+        // RAG Content System - Analyzes and stores content patterns
+        class RAGContentSystem {
+            constructor() {
+                this.contentVectors = new Map();
+                this.analysisCache = new Map();
+            }
+
+            async analyzeContent(posts) {
+                console.log('🧠 Analyzing content with RAG system...');
+                
+                const analysis = {
+                    totalPosts: posts.length,
+                    topicDistribution: this.analyzeTopics(posts),
+                    engagementInsights: this.analyzeEngagement(posts),
+                    successfulFormats: this.identifyFormats(posts)
+                };
+
+                await this.storeVectors(posts, analysis);
+                return analysis;
+            }
+
+            analyzeTopics(posts) {
+                const topicCounts = {};
+                posts.forEach(post => {
+                    topicCounts[post.topic] = (topicCounts[post.topic] || 0) + 1;
+                });
+                return topicCounts;
+            }
+
+            analyzeEngagement(posts) {
+                const highEngagementPosts = posts.filter(post => 
+                    post.engagement.likes > 100 || post.engagement.comments > 10
+                );
+                
+                return {
+                    highEngagementCount: highEngagementPosts.length,
+                    avgLikes: posts.reduce((sum, p) => sum + p.engagement.likes, 0) / posts.length,
+                    avgComments: posts.reduce((sum, p) => sum + p.engagement.comments, 0) / posts.length
+                };
+            }
+
+            identifyFormats(posts) {
+                const formats = { question: 0, story: 0, list: 0, insight: 0 };
+                
+                posts.forEach(post => {
+                    if (post.content.includes('?')) formats.question++;
+                    if (post.content.includes('story')) formats.story++;
+                    if (post.content.match(/\d+\./)) formats.list++;
+                    else formats.insight++;
+                });
+
+                return formats;
+            }
+
+            async storeVectors(posts, analysis) {
+                posts.forEach((post, index) => {
+                    this.contentVectors.set(`${Date.now()}_${index}`, {
+                        content: post.content,
+                        metadata: { topic: post.topic, engagement: post.engagement }
+                    });
+                });
+            }
+
+            async queryRelevantContent(topic, limit = 5) {
+                const relevant = [];
+                this.contentVectors.forEach((data, key) => {
+                    if (data.metadata.topic.includes(topic)) {
+                        relevant.push(data);
+                    }
+                });
+                return relevant.slice(0, limit);
+            }
+
+            async loadCache(data) {
+                if (data) {
+                    this.contentVectors = new Map(data.contentVectors || []);
+                }
+            }
+        }
+
+        // Trend Analyzer - Extracts trending topics
+        class TrendAnalyzer {
+            constructor() {
+                this.trendHistory = new Map();
+            }
+
+            async extractTrends(posts) {
+                console.log('📈 Analyzing trends...');
+                
+                const topicCounts = {};
+                const topicEngagement = {};
+
+                posts.forEach(post => {
+                    const topic = post.topic;
+                    topicCounts[topic] = (topicCounts[topic] || 0) + 1;
+                    
+                    if (!topicEngagement[topic]) {
+                        topicEngagement[topic] = { likes: 0, comments: 0 };
+                    }
+                    
+                    topicEngagement[topic].likes += post.engagement.likes;
+                    topicEngagement[topic].comments += post.engagement.comments;
+                });
+
+                const trends = Object.keys(topicCounts).map(topic => ({
+                    name: topic,
+                    mentions: topicCounts[topic],
+                    engagement: topicEngagement[topic],
+                    score: topicCounts[topic] * 10 + topicEngagement[topic].likes + topicEngagement[topic].comments * 3
+                })).sort((a, b) => b.score - a.score);
+
+                return trends;
+            }
+        }
+
+        // Content Intelligence Agent
+        class ContentIntelligenceAgent {
+            constructor() {
+                this.memory = new Map();
+                this.patterns = new Map();
+            }
+
+            async updateMemory(analysis, trends) {
+                console.log('🧠 Updating agent memory...');
+                
+                const timestamp = Date.now();
+                this.memory.set(timestamp, { analysis, trends });
+                
+                // Keep only recent memory (last 7 days)
+                const weekAgo = timestamp - 7 * 24 * 60 * 60 * 1000;
+                this.memory.forEach((value, key) => {
+                    if (key < weekAgo) {
+                        this.memory.delete(key);
+                    }
+                });
+            }
+
+            async generateIntelligentContent(role, topic, trends) {
+                console.log('🎯 Generating intelligent content...');
+                
+                const relevantTrends = trends.filter(trend => 
+                    trend.name.toLowerCase().includes(topic.toLowerCase())
+                ).slice(0, 3);
+
+                const trendContext = relevantTrends.length > 0 ? 
+                    `Current trending topics in your network include ${relevantTrends.map(t => t.name).join(', ')}.` : '';
+
+                return this.createContextualContent(role, topic, trendContext);
+            }
+
+            createContextualContent(role, topic, trendContext) {
+                const roleProfiles = {
+                    'ceo': { voice: 'strategic', focus: 'leadership and vision' },
+                    'cto': { voice: 'technical', focus: 'innovation and technology' },
+                    'marketing-manager': { voice: 'engaging', focus: 'growth and customers' }
+                };
+
+                const profile = roleProfiles[role] || roleProfiles['ceo'];
+                
+                return `As a ${role}, I've been reflecting on ${topic}. ${trendContext}\n\nHere's what I've learned about ${profile.focus}:\n\nThe key insight is that success in ${topic} requires a ${profile.voice} approach that goes beyond conventional thinking.\n\nWhat's your experience with this?\n\n#${role.replace('-', '')} #${topic.replace(/\s+/g, '')} #Leadership #Professional`;
+            }
+
+            async loadMemory(data) {
+                if (data) {
+                    this.memory = new Map(data.memory || []);
+                    this.patterns = new Map(data.patterns || []);
+                }
+            }
+        }
+
+        // Main Application Class (simplified)
+        class AifluenceApp {
+            constructor() {
+                this.authService = new AuthService();
+                this.contentGenerator = new ContentGenerator();
+                this.currentUser = null;
+                this.initialized = false;
+            }
+
+            async init() {
+                console.log('🚀 Initializing AIfluence App...');
+                
+                try {
+                    await this.authService.initialize();
+                    
+                    // Initialize RAG-enhanced content generator
+                    await this.contentGenerator.init();
+                    
+                    this.setupGlobalReferences();
+                    this.setupEventListeners();
+                    this.setupAuthStateListener();
+                    this.updateUIForAuthState();
+                    
+                    this.initialized = true;
+                    console.log('✅ AIfluence App initialized successfully');
+                    
+                } catch (error) {
+                    console.error('❌ Failed to initialize app:', error);
+                    showToast('Failed to initialize application. Please refresh the page.', 'error');
+                }
+            }
+
+            setupGlobalReferences() {
+                window.authService = this.authService;
+                window.contentGenerator = this.contentGenerator;
+                window.app = this;
+                
+                window.handleLogout = this.handleLogout.bind(this);
+                window.useDemoAccount = this.useDemoAccount.bind(this);
+                window.generateLinkedInPost = this.generateLinkedInPost.bind(this);
+                window.generateMultiplePosts = this.generateMultiplePosts.bind(this);
+                
+                // Multiple posts helper functions
+                window.copyPost = this.copyPost.bind(this);
+                window.editPost = this.editPost.bind(this);
+                window.copyAllPosts = this.copyAllPosts.bind(this);
+                window.clearPosts = this.clearPosts.bind(this);
+                
+                console.log('✅ Global references set up');
+            }
+
+            setupEventListeners() {
+                this.attachEventListener('demo-account-btn', 'click', this.useDemoAccount.bind(this));
+                this.attachEventListener('generate-btn', 'click', this.generateLinkedInPost.bind(this));
+                this.attachEventListener('generate-multiple-btn', 'click', this.generateMultiplePosts.bind(this));
+                
+                // Multiple posts controls
+                this.attachEventListener('copy-all-posts', 'click', this.copyAllPosts.bind(this));
+                this.attachEventListener('clear-posts', 'click', this.clearPosts.bind(this));
+                
+                console.log('✅ Event listeners attached');
+            }
+
+            attachEventListener(elementId, event, handler) {
+                const element = document.getElementById(elementId);
+                if (element) {
+                    element.addEventListener(event, (e) => {
+                        e.preventDefault();
+                        try {
+                            handler(e);
+                        } catch (error) {
+                            console.error(`Error in ${elementId} ${event} handler:`, error);
+                            showToast('An error occurred. Please try again.', 'error');
+                        }
+                    });
+                    console.log(`✅ ${elementId} event listener attached`);
+                } else {
+                    console.log(`⚠️ ${elementId} element not found`);
+                }
+            }
+
+            setupAuthStateListener() {
+                this.authService.onAuthStateChange((type, user) => {
+                    console.log(`🔐 Auth state changed: ${type}`, user);
+                    this.currentUser = user;
+                    window.currentUser = user;
+                    this.updateUIForAuthState();
+                });
+            }
+
+            updateUIForAuthState() {
+                const isAuthenticated = this.authService.isAuthenticated();
+                const user = this.authService.getCurrentUser();
+                
+                this.toggleElement('auth-section', !isAuthenticated);
+                this.toggleElement('main-app', isAuthenticated);
+                
+                if (isAuthenticated && user) {
+                    this.updateUserDisplay(user);
+                }
+                
+                console.log(`🔄 UI updated for auth state: ${isAuthenticated ? 'authenticated' : 'not authenticated'}`);
+            }
+
+            toggleElement(elementId, show) {
+                const element = document.getElementById(elementId);
+                if (element) {
+                    if (show) {
+                        element.classList.remove('hidden');
+                    } else {
+                        element.classList.add('hidden');
+                    }
+                }
+            }
+
+            updateUserDisplay(user) {
+                const userNameElements = document.querySelectorAll('.user-name');
+                userNameElements.forEach(element => {
+                    element.textContent = user.name;
+                });
+            }
+
+            async handleLogout() {
+                if (confirm('Are you sure you want to sign out?')) {
+                    await this.authService.logout();
+                    showToast('You have been signed out successfully.', 'success');
+                }
+            }
+
+            async useDemoAccount() {
+                console.log('🎭 Demo account initiated');
+                
+                showToast('Setting up demo account...', 'info');
+                
+                const result = await this.authService.useDemoAccount();
+                
+                if (result.success) {
+                    showToast('Welcome to the AIfluence demo!', 'success');
+                } else {
+                    showToast('Failed to set up demo account.', 'error');
+                }
+            }
+
+            async generateLinkedInPost() {
+                if (!this.authService.isAuthenticated()) {
+                    showToast('Please sign in to generate content.', 'error');
+                    return;
+                }
+                
+                const result = await this.contentGenerator.generatePost();
+                
+                if (!result.success) {
+                    showToast(result.error || 'Failed to generate post.', 'error');
+                }
+            }
+
+            async generateMultiplePosts() {
+                if (!this.authService.isAuthenticated()) {
+                    showToast('Please sign in to generate content.', 'error');
+                    return;
+                }
+                
+                const result = await this.contentGenerator.generateMultiplePosts();
+                
+                if (!result.success) {
+                    showToast(result.error || 'Failed to generate posts.', 'error');
+                }
+            }
+
+            // Helper methods for multiple posts functionality
+            copyPost(index) {
+                const posts = this.contentGenerator.generatedPosts;
+                if (posts && posts[index]) {
+                    navigator.clipboard.writeText(posts[index].content).then(() => {
+                        showToast(`Post ${index + 1} copied to clipboard!`, 'success');
+                    }).catch(() => {
+                        showToast('Failed to copy post. Please try again.', 'error');
+                    });
+                }
+            }
+
+            editPost(index) {
+                const posts = this.contentGenerator.generatedPosts;
+                if (posts && posts[index]) {
+                    const newContent = prompt('Edit post content:', posts[index].content);
+                    if (newContent && newContent.trim() !== '') {
+                        posts[index].content = newContent.trim();
+                        this.contentGenerator.displayMultiplePosts(posts);
+                        showToast(`Post ${index + 1} updated!`, 'success');
+                    }
+                }
+            }
+
+            copyAllPosts() {
+                const posts = this.contentGenerator.generatedPosts;
+                if (posts && posts.length > 0) {
+                    const allContent = posts.map((post, index) => 
+                        `=== POST ${index + 1} ===\n\n${post.content}\n\n`
+                    ).join('');
+                    
+                    navigator.clipboard.writeText(allContent).then(() => {
+                        showToast(`All ${posts.length} posts copied to clipboard!`, 'success');
+                    }).catch(() => {
+                        showToast('Failed to copy posts. Please try again.', 'error');
+                    });
+                }
+            }
+
+            clearPosts() {
+                if (confirm('Are you sure you want to clear all generated posts?')) {
+                    this.contentGenerator.generatedPosts = [];
+                    const container = document.getElementById('multiple-posts-container');
+                    if (container) {
+                        container.classList.add('hidden');
+                    }
+                    showToast('All posts cleared!', 'success');
+                }
+            }
+        }
+
+        // Initialize app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log('🎯 DOM loaded, initializing AIfluence App...');
+            
+            // Hide loading indicator
+            setTimeout(() => {
+                document.getElementById('loading-indicator').classList.add('hidden');
+            }, 1000);
+            
+            // Create and initialize app
+            window.aifluenceApp = new AifluenceApp();
+            await window.aifluenceApp.init();
+        });
+
+        console.log('✅ All scripts loaded successfully');
+    </script>
+</body>
+</html>

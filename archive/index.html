@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIfluence - AI-Powered Social Media Intelligence</title>
+    
+    <!-- SECURITY HEADERS -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data: blob:; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.tailwindcss.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https: ws: wss: http://localhost:*; img-src 'self' https: data: blob:; frame-src 'none';">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    
+    <!-- FAVICON -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZGllbnQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgo8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMTQ5N0ZGO3N0b3Atb3BhY2l0eToxIiAvPgo8c3RvcCBvZmZzZXQ9IjUwJSIgc3R5bGU9InN0b3AtY29sb3I6IzhCNUNGNjtzdG9wLW9wYWNpdHk6MSIgLz4KPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojRkY3MEIyO3N0b3Atb3BhY2l0eToxIiAvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+CjxyZWN0IHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgcng9IjgiIGZpbGw9InVybCgjZ3JhZGllbnQpIi8+CjxwYXRoIGQ9Ik0xMCA4SDIyQzIzLjEwNDYgOCAyNCA4Ljg5NTQzIDI0IDEwVjE0QzI0IDE1LjEwNDYgMjMuMTA0NiAxNiAyMiAxNkgxOEwxNCAyMFYxNkgxMEM4Ljg5NTQzIDE2IDggMTUuMTA0NiA4IDE0VjEwQzggOC44OTU0MyA4Ljg5NTQzIDggMTAgOFoiIGZpbGw9IndoaXRlIiBmaWxsLW9wYWNpdHk9IjAuOSIvPgo8Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxLjUiIGZpbGw9InVybCgjZ3JhZGllbnQpIi8+CjxjaXJjbGUgY3g9IjE2IiBjeT0iMTIiIHI9IjEuNSIgZmlsbD0idXJsKCdncmFkaWVudCkiLz4KPGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMS41IiBmaWxsPSJ1cmwoI2dyYWRpZW50KSIvPgo8cGF0aCBkPSJNMTQgMjJDMTYuNzYxNCAyMiAxOSAyNC4yMzg2IDE5IDI3SDlDOSAyNC4yMzg2IDExLjIzODYgMjIgMTQgMjJaIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjciLz4KPC9zdmc+">
+    
+    <!-- META -->
+    <meta name="description" content="AI-powered social media intelligence platform for creating, scheduling, and analyzing LinkedIn content">
+    
+    <!-- FONTS -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- TAILWIND CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'linkedin': '#0077B5',
+                        'linkedin-hover': '#005885',
+                        'aifluence': {
+                            '50': '#eff8ff',
+                            '100': '#dbeefe',
+                            '200': '#bfe2fe',
+                            '300': '#93d0fd',
+                            '400': '#60b4fa',
+                            '500': '#3b97f6',
+                            '600': '#1497ff',
+                            '700': '#0c6adf',
+                            '800': '#1155b5',
+                            '900': '#154a8e'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- BASE STYLES -->
+    <link rel="stylesheet" href="src/css/base.css">
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white font-['Inter']">
+    
+    <!-- LOADING INDICATOR -->
+    <div id="loading-indicator" class="fixed inset-0 bg-slate-900 z-50 flex items-center justify-center">
+        <div class="text-center">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-aifluence-600 mx-auto mb-4"></div>
+            <p class="text-slate-400">Loading AIfluence...</p>
+        </div>
+    </div>
+
+    <!-- AUTHENTICATION SECTION -->
+    <div id="auth-section" class="hidden min-h-screen flex items-center justify-center p-4">
+        <div class="max-w-md w-full space-y-8">
+            <!-- Logo -->
+            <div class="text-center">
+                <div class="mx-auto h-16 w-16 bg-gradient-to-r from-aifluence-600 to-purple-600 rounded-xl flex items-center justify-center mb-4">
+                    <svg class="h-8 w-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <h1 class="text-3xl font-bold text-white">AIfluence</h1>
+                <p class="text-slate-400 mt-2">AI-Powered Social Media Intelligence</p>
+            </div>
+
+            <!-- Demo Account Button -->
+            <button id="demo-account-btn" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all">
+                🎭 Try Demo Account
+            </button>
+
+            <!-- Login Form -->
+            <div id="login-form-container" class="hidden">
+                <form id="login-form" class="space-y-6">
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-slate-300">Email</label>
+                        <input id="email" name="email" type="email" required class="mt-1 appearance-none relative block w-full px-3 py-2 border border-slate-600 placeholder-slate-400 text-white bg-slate-800 rounded-lg focus:outline-none focus:ring-aifluence-500 focus:border-aifluence-500 focus:z-10 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-slate-300">Password</label>
+                        <input id="password" name="password" type="password" required class="mt-1 appearance-none relative block w-full px-3 py-2 border border-slate-600 placeholder-slate-400 text-white bg-slate-800 rounded-lg focus:outline-none focus:ring-aifluence-500 focus:border-aifluence-500 focus:z-10 sm:text-sm">
+                    </div>
+                    <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-aifluence-600 hover:bg-aifluence-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-aifluence-500">
+                        Sign In
+                    </button>
+                </form>
+                <p class="mt-4 text-center text-sm text-slate-400">
+                    Don't have an account? 
+                    <button id="show-register-btn" class="text-aifluence-400 hover:text-aifluence-300">Sign up</button>
+                </p>
+            </div>
+
+            <!-- Register Form -->
+            <div id="register-form-container" class="hidden">
+                <form id="register-form" class="space-y-6">
+                    <div>
+                        <label for="reg-name" class="block text-sm font-medium text-slate-300">Full Name</label>
+                        <input id="reg-name" name="name" type="text" required class="mt-1 appearance-none relative block w-full px-3 py-2 border border-slate-600 placeholder-slate-400 text-white bg-slate-800 rounded-lg focus:outline-none focus:ring-aifluence-500 focus:border-aifluence-500 focus:z-10 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="reg-email" class="block text-sm font-medium text-slate-300">Email</label>
+                        <input id="reg-email" name="email" type="email" required class="mt-1 appearance-none relative block w-full px-3 py-2 border border-slate-600 placeholder-slate-400 text-white bg-slate-800 rounded-lg focus:outline-none focus:ring-aifluence-500 focus:border-aifluence-500 focus:z-10 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="reg-password" class="block text-sm font-medium text-slate-300">Password</label>
+                        <input id="reg-password" name="password" type="password" required class="mt-1 appearance-none relative block w-full px-3 py-2 border border-slate-600 placeholder-slate-400 text-white bg-slate-800 rounded-lg focus:outline-none focus:ring-aifluence-500 focus:border-aifluence-500 focus:z-10 sm:text-sm">
+                        <p class="mt-1 text-xs text-slate-400">Must include uppercase, lowercase, and number</p>
+                    </div>
+                    <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-aifluence-600 hover:bg-aifluence-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-aifluence-500">
+                        Create Account
+                    </button>
+                </form>
+                <p class="mt-4 text-center text-sm text-slate-400">
+                    Already have an account? 
+                    <button id="show-login-btn" class="text-aifluence-400 hover:text-aifluence-300">Sign in</button>
+                </p>
+            </div>
+
+            <!-- Initial Buttons -->
+            <div id="auth-buttons" class="space-y-3">
+                <button id="login-btn" class="w-full flex justify-center py-3 px-4 border border-slate-600 rounded-lg shadow-sm text-sm font-medium text-slate-300 bg-slate-800 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
+                    Sign In
+                </button>
+                <button id="register-btn" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-slate-700 hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
+                    Create Account
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APPLICATION -->
+    <div id="main-app" class="hidden">
+        <!-- Navigation -->
+        <nav class="bg-slate-800/50 backdrop-blur-md border-b border-slate-700">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <h1 class="text-xl font-bold text-white">AIfluence</h1>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <span class="text-sm text-slate-300">Welcome, <span class="user-name">User</span></span>
+                        <button onclick="handleLogout()" class="text-sm text-slate-400 hover:text-white">Sign Out</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Content Generator Section -->
+        <div class="max-w-4xl mx-auto p-6">
+            <div id="content-generator" class="bg-slate-800/50 backdrop-blur-md border border-slate-700 rounded-xl p-6">
+                <h2 class="text-2xl font-bold text-white mb-6">AI Content Generator</h2>
+                
+                <!-- Input Fields -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-2">Topic</label>
+                        <input id="custom-topic" type="text" value="AI Readiness Assessment" class="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-aifluence-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-2">Audience</label>
+                        <input id="custom-audience" type="text" value="C-level executives and business leaders" class="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-aifluence-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-2">Tone</label>
+                        <input id="custom-tone" type="text" value="Professional and authoritative" class="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-aifluence-500">
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-wrap gap-3 mb-6">
+                    <button id="generate-btn" class="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-aifluence-600 to-purple-600 hover:from-aifluence-700 hover:to-purple-700 text-white rounded-lg transition-colors">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                        <span>Generate Post</span>
+                    </button>
+                    <button id="generate-multiple-btn" class="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-lg transition-colors">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012 2v2M7 7h10"></path>
+                        </svg>
+                        <span>Generate 5 Posts</span>
+                    </button>
+                </div>
+
+                <!-- Generated Content Display -->
+                <div id="generated-content" class="hidden mt-6 p-4 bg-slate-700/50 border border-slate-600 rounded-lg">
+                    <h3 class="text-lg font-semibold text-white mb-3">Generated Content</h3>
+                    <div id="content-text" class="text-slate-300 whitespace-pre-wrap mb-3"></div>
+                    <div id="char-count" class="text-sm text-slate-500"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATIONS -->
+    <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+    <!-- SCRIPTS -->
+    <!-- API Configuration -->
+    <script src="src/js/api/config.js"></script>
+    
+    <!-- Utility Functions -->
+    <script src="src/js/utils/toast.js"></script>
+    
+    <!-- Main Application Module -->
+    <script type="module" src="src/js/app.js"></script>
+    
+    <!-- Hide loading indicator when app loads -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                document.getElementById('loading-indicator').classList.add('hidden');
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

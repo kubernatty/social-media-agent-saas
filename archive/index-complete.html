@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIfluence - AI-Powered Social Media Intelligence</title>
+    
+    <!-- SECURITY HEADERS -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data: blob:; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.tailwindcss.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https: ws: wss: http://localhost:*; img-src 'self' https: data: blob:; frame-src 'none';">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    
+    <!-- FAVICON -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZGllbnQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgo8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMTQ5N0ZGO3N0b3Atb3BhY2l0eToxIiAvPgo8c3RvcCBvZmZzZXQ9IjUwJSIgc3R5bGU9InN0b3AtY29sb3I6IzhCNUNGNjtzdG9wLW9wYWNpdHk6MSIgLz4KPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojRkY3MEIyO3N0b3Atb3BhY2l0eToxIiAvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+CjxyZWN0IHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgcng9IjgiIGZpbGw9InVybCgjZ3JhZGllbnQpIi8+CjxwYXRoIGQ9Ik0xMCA4SDIyQzIzLjEwNDYgOCAyNCA4Ljg5NTQzIDI0IDEwVjE0QzI0IDE1LjEwNDYgMjMuMTA0NiAxNiAyMiAxNkgxOEwxNCAyMFYxNkgxMEM4Ljg5NTQzIDE2IDggMTUuMTA0NiA4IDE0VjEwQzggOC44OTU0MyA4Ljg5NTQzIDggMTAgOFoiIGZpbGw9IndoaXRlIiBmaWxsLW9wYWNpdHk9IjAuOSIvPgo8Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxLjUiIGZpbGw9InVybCgjZ3JhZGllbnQpIi8+CjxjaXJjbGUgY3g9IjE2IiBjeT0iMTIiIHI9IjEuNSIgZmlsbD0idXJsKCdncmFkaWVudCkiLz4KPGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMS41IiBmaWxsPSJ1cmwoI2dyYWRpZW50KSIvPgo8cGF0aCBkPSJNMTQgMjJDMTYuNzYxNCAyMiAxOSAyNC4yMzg2IDE5IDI3SDlDOSAyNC4yMzg2IDExLjIzODYgMjIgMTQgMjJaIiBmaWxsPSJ3aGl0ZSIgZmlsbC1vcGFjaXR5PSIwLjciLz4KPC9zdmc+">
+    
+    <!-- META -->
+    <meta name="description" content="AI-powered social media intelligence platform for creating, scheduling, and analyzing LinkedIn content">
+    
+    <!-- FONTS -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- TAILWIND CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'linkedin': '#0077B5',
+                        'linkedin-hover': '#005885',
+                        'aifluence': {
+                            '50': '#eff8ff',
+                            '100': '#dbeefe',
+                            '200': '#bfe2fe',
+                            '300': '#93d0fd',
+                            '400': '#60b4fa',
+                            '500': '#3b97f6',
+                            '600': '#1497ff',
+                            '700': '#0c6adf',
+                            '800': '#1155b5',
+                            '900': '#154a8e'
+                        },
+                        'hootsuite': {
+                            'dark': '#1a1a1a',
+                            'darker': '#0f0f0f',
+                            'panel': '#1e1e1e',
+                            'border': '#2a2a2a',
+                            'accent': '#5e17eb',
+                            'text': '#e5e5e5',
+                            'text-muted': '#a0a0a0'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- BASE STYLES -->
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Tab Styles */
+        .tab-btn {
+            transition: all 0.2s ease;
+        }
+        
+        .tab-btn:hover {
+            background-color: rgba(30, 30, 30, 0.5);
+        }
+        
+        .tab-btn.active {
+            background-color: #5e17eb;
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white font-['Inter']">
+    
+    <!-- LOADING INDICATOR -->
+    <div id="loading-indicator" class="fixed inset-0 bg-slate-900 z-50 flex items-center justify-center">
+        <div class="text-center">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-aifluence-600 mx-auto mb-4"></div>
+            <p class="text-slate-400">Loading AIfluence...</p>
+        </div>
+    </div>
+
+    <!-- AUTHENTICATION SECTION -->
+    <div id="auth-section" class="hidden min-h-screen flex items-center justify-center p-4">
+        <div class="max-w-md w-full space-y-8">
+            <!-- Logo -->
+            <div class="text-center">
+                <div class="mx-auto h-16 w-16 bg-gradient-to-r from-aifluence-600 to-purple-600 rounded-xl flex items-center justify-center mb-4">
+                    <svg class="h-8 w-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <h1 class="text-3xl font-bold text-white">AIfluence</h1>
+                <p class="text-slate-400 mt-2">AI-Powered Social Media Intelligence</p>
+            </div>
+
+            <!-- Demo Account Button -->
+            <button id="demo-account-btn" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all">
+                🎭 Try Demo Account
+            </button>
+
+            <!-- Initial Buttons -->
+            <div id="auth-buttons" class="space-y-3">
+                <button id="login-btn" class="w-full flex justify-center py-3 px-4 border border-slate-600 rounded-lg shadow-sm text-sm font-medium text-slate-300 bg-slate-800 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
+                    Sign In
+                </button>
+                <button id="register-btn" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-slate-700 hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">
+                    Create Account
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APPLICATION -->
+    <div id="main-app" class="hidden min-h-screen bg-hootsuite-darker">
+        <!-- Navigation -->
+        <nav class="bg-hootsuite-dark border-b border-hootsuite-border">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <h1 class="text-xl font-bold text-white">AIfluence</h1>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <span class="text-sm text-hootsuite-text-muted">Welcome, <span class="user-name text-hootsuite-text">User</span></span>
+                        <button onclick="handleLogout()" class="text-sm text-hootsuite-text-muted hover:text-hootsuite-text">Sign Out</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Tab Navigation -->
+        <div class="bg-hootsuite-panel border-b border-hootsuite-border">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex space-x-8">
+                    <button data-tab="generator" id="tab-generator" class="tab-btn active flex items-center space-x-2 px-4 py-3 text-sm font-medium transition-colors">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                        <span>Generator</span>
+                    </button>
+                    <button data-tab="scheduler" id="tab-scheduler" class="tab-btn flex items-center space-x-2 px-4 py-3 text-sm font-medium transition-colors text-hootsuite-text-muted hover:text-hootsuite-text hover:bg-hootsuite-panel/50">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        <span>Scheduler</span>
+                    </button>
+                    <button data-tab="analytics" id="tab-analytics" class="tab-btn flex items-center space-x-2 px-4 py-3 text-sm font-medium transition-colors text-hootsuite-text-muted hover:text-hootsuite-text hover:bg-hootsuite-panel/50">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                        <span>Analytics</span>
+                    </button>
+                    <button data-tab="personal-ai" id="tab-personal-ai" class="tab-btn flex items-center space-x-2 px-4 py-3 text-sm font-medium transition-colors text-hootsuite-text-muted hover:text-hootsuite-text hover:bg-hootsuite-panel/50">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                        <span>Personal AI</span>
+                    </button>
+                    <button data-tab="settings" id="tab-settings" class="tab-btn flex items-center space-x-2 px-4 py-3 text-sm font-medium transition-colors text-hootsuite-text-muted hover:text-hootsuite-text hover:bg-hootsuite-panel/50">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        <span>Settings</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Content Container -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            
+            <!-- GENERATOR TAB -->
+            <div id="content-generator" class="tab-content active">
+                <div class="bg-hootsuite-panel border border-hootsuite-border rounded-xl p-6">
+                    <h2 class="text-2xl font-bold text-hootsuite-text mb-6">AI Content Generator</h2>
+                    
+                    <!-- Input Fields -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div>
+                            <label class="block text-sm font-medium text-hootsuite-text mb-2">Topic</label>
+                            <input id="custom-topic" type="text" value="AI Readiness Assessment" class="w-full px-3 py-2 bg-hootsuite-dark border border-hootsuite-border rounded-lg text-hootsuite-text focus:outline-none focus:border-aifluence-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-hootsuite-text mb-2">Audience</label>
+                            <input id="custom-audience" type="text" value="C-level executives and business leaders" class="w-full px-3 py-2 bg-hootsuite-dark border border-hootsuite-border rounded-lg text-hootsuite-text focus:outline-none focus:border-aifluence-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-hootsuite-text mb-2">Tone</label>
+                            <input id="custom-tone" type="text" value="Professional and authoritative" class="w-full px-3 py-2 bg-hootsuite-dark border border-hootsuite-border rounded-lg text-hootsuite-text focus:outline-none focus:border-aifluence-500">
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-wrap gap-3 mb-6">
+                        <button id="generate-btn" class="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-aifluence-600 to-purple-600 hover:from-aifluence-700 hover:to-purple-700 text-white rounded-lg transition-colors">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                            <span>Generate Post</span>
+                        </button>
+                        <button id="generate-multiple-btn" class="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-lg transition-colors">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012 2v2M7 7h10"></path>
+                            </svg>
+                            <span>Generate 5 Posts</span>
+                        </button>
+                    </div>
+
+                    <!-- Generated Content Display -->
+                    <div id="generated-content" class="hidden mt-6 p-4 bg-hootsuite-dark border border-hootsuite-border rounded-lg">
+                        <h3 class="text-lg font-semibold text-hootsuite-text mb-3">Generated Content</h3>
+                        <div id="content-text" class="text-hootsuite-text-muted whitespace-pre-wrap mb-3"></div>
+                        <div id="char-count" class="text-sm text-hootsuite-text-muted"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SCHEDULER TAB -->
+            <div id="content-scheduler" class="tab-content">
+                <div class="bg-hootsuite-panel border border-hootsuite-border rounded-xl p-6">
+                    <h2 class="text-2xl font-bold text-hootsuite-text mb-6">Content Scheduler</h2>
+                    <div class="text-center py-12">
+                        <svg class="h-16 w-16 text-hootsuite-text-muted mx-auto mb-4">
+                            <path fill="currentColor" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                        <h3 class="text-xl font-medium text-hootsuite-text mb-2">Scheduler Coming Soon</h3>
+                        <p class="text-hootsuite-text-muted mb-4">Schedule your AI-generated posts for optimal engagement times.</p>
+                        <div class="inline-flex items-center px-4 py-2 bg-hootsuite-accent/20 text-hootsuite-accent rounded-lg text-sm">
+                            <svg class="h-4 w-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"/>
+                            </svg>
+                            Frontend-only feature (localStorage based)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ANALYTICS TAB -->
+            <div id="content-analytics" class="tab-content">
+                <div class="bg-hootsuite-panel border border-hootsuite-border rounded-xl p-6">
+                    <h2 class="text-2xl font-bold text-hootsuite-text mb-6">Analytics Dashboard</h2>
+                    <div class="text-center py-12">
+                        <svg class="h-16 w-16 text-hootsuite-text-muted mx-auto mb-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/>
+                        </svg>
+                        <h3 class="text-xl font-medium text-hootsuite-text mb-2">Analytics Dashboard</h3>
+                        <p class="text-hootsuite-text-muted mb-4">Track your content performance and engagement metrics.</p>
+                        <div class="inline-flex items-center px-4 py-2 bg-yellow-500/20 text-yellow-400 rounded-lg text-sm">
+                            <svg class="h-4 w-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                            </svg>
+                            Shows demo data only - no backend integration
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PERSONAL AI TAB -->
+            <div id="content-personal-ai" class="tab-content">
+                <div class="bg-hootsuite-panel border border-hootsuite-border rounded-xl p-6">
+                    <h2 class="text-2xl font-bold text-hootsuite-text mb-6">Personal AI Studio</h2>
+                    <div class="text-center py-12">
+                        <svg class="h-16 w-16 text-hootsuite-text-muted mx-auto mb-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+                        </svg>
+                        <h3 class="text-xl font-medium text-hootsuite-text mb-2">Personal AI Studio</h3>
+                        <p class="text-hootsuite-text-muted mb-4">Generate professional AI images of your team members.</p>
+                        <div class="inline-flex items-center px-4 py-2 bg-red-500/20 text-red-400 rounded-lg text-sm">
+                            <svg class="h-4 w-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                            </svg>
+                            Frontend-only (localStorage) - no backend storage
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SETTINGS TAB -->
+            <div id="content-settings" class="tab-content">
+                <div class="bg-hootsuite-panel border border-hootsuite-border rounded-xl p-6">
+                    <h2 class="text-2xl font-bold text-hootsuite-text mb-6">Account Settings</h2>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Profile Settings -->
+                        <div class="space-y-4">
+                            <h3 class="text-lg font-medium text-hootsuite-text">Profile Information</h3>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-hootsuite-text mb-2">Full Name</label>
+                                <input type="text" id="settings-name" placeholder="Enter your full name" class="w-full px-3 py-2 bg-hootsuite-dark border border-hootsuite-border rounded-lg text-hootsuite-text placeholder-hootsuite-text-muted focus:ring-2 focus:ring-aifluence-500 focus:border-transparent">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-hootsuite-text mb-2">Email</label>
+                                <input type="email" id="settings-email" placeholder="Enter your email" class="w-full px-3 py-2 bg-hootsuite-dark border border-hootsuite-border rounded-lg text-hootsuite-text placeholder-hootsuite-text-muted focus:ring-2 focus:ring-aifluence-500 focus:border-transparent">
+                            </div>
+                            
+                            <button onclick="saveProfile()" class="px-4 py-2 bg-aifluence-600 hover:bg-aifluence-700 text-white rounded-lg transition-colors">
+                                Save Profile
+                            </button>
+                        </div>
+
+                        <!-- LinkedIn Connection -->
+                        <div class="space-y-4">
+                            <h3 class="text-lg font-medium text-hootsuite-text">LinkedIn Integration</h3>
+                            
+                            <div id="linkedin-status" class="p-4 bg-hootsuite-dark border border-hootsuite-border rounded-lg">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-hootsuite-text font-medium">LinkedIn Account</p>
+                                        <p class="text-hootsuite-text-muted text-sm">Connect your LinkedIn for posting</p>
+                                    </div>
+                                    <button onclick="connectLinkedIn()" class="px-4 py-2 bg-linkedin hover:bg-linkedin-hover text-white rounded-lg transition-colors text-sm">
+                                        Connect LinkedIn
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Billing Section -->
+                            <div class="mt-6">
+                                <h3 class="text-lg font-medium text-hootsuite-text mb-4">Subscription Plan</h3>
+                                <div class="p-4 bg-hootsuite-dark border border-hootsuite-border rounded-lg">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <p class="text-hootsuite-text font-medium">Current Plan: <span class="user-plan">Free</span></p>
+                                            <p class="text-hootsuite-text-muted text-sm">Upgrade for more features</p>
+                                        </div>
+                                        <button onclick="upgradePlan()" class="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-lg transition-colors text-sm">
+                                            Upgrade
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATIONS -->
+    <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+    <!-- SCRIPTS (same as working version) -->
+    <script>
+        // API Configuration
+        window.API_CONFIG = {
+            BASE_URL: window.location.protocol === 'file:' 
+                ? 'http://localhost:3001' 
+                : window.location.protocol + '//' + window.location.hostname + ':3001',
+            
+            ENDPOINTS: {
+                REGISTER: '/api/auth/register',
+                LOGIN: '/api/auth/login',
+                VERIFY: '/api/auth/verify',
+                REFRESH: '/api/auth/refresh',
+                USER_PROFILE: '/api/users/profile',
+                USER_STATS: '/api/users/stats',
+                POSTS: '/api/posts',
+                LINKEDIN_CONNECTION: '/api/linkedin/connection',
+                ANALYTICS_EVENT: '/api/analytics/event',
+                OPENAI_IMAGES: '/api/openai/images'
+            },
+            
+            DEFAULT_HEADERS: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            
+            getAuthHeaders: function() {
+                const token = localStorage.getItem('aifluence_auth_token');
+                return token ? { 
+                    ...this.DEFAULT_HEADERS, 
+                    'Authorization': `Bearer ${token}` 
+                } : this.DEFAULT_HEADERS;
+            }
+        };
+
+        // Toast notification system
+        window.showToast = function(message, type = 'info', duration = 4000) {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+
+            const toast = document.createElement('div');
+            toast.className = `max-w-sm w-full shadow-lg rounded-lg pointer-events-auto transform transition-all duration-300 translate-x-full`;
+            
+            const bgColor = {
+                success: 'bg-green-600',
+                error: 'bg-red-600',
+                warning: 'bg-yellow-600',
+                info: 'bg-blue-600'
+            }[type] || 'bg-slate-600';
+
+            const icon = {
+                success: '✅',
+                error: '❌',
+                warning: '⚠️',
+                info: 'ℹ️'
+            }[type] || 'ℹ️';
+
+            toast.innerHTML = `
+                <div class="${bgColor} p-4 rounded-lg text-white">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 mr-3">
+                            <span class="text-lg">${icon}</span>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-sm font-medium">${message}</p>
+                        </div>
+                        <button onclick="this.parentElement.parentElement.parentElement.remove()" class="ml-3 text-white hover:text-gray-200 focus:outline-none">
+                            <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.remove('translate-x-full'), 100);
+            setTimeout(() => {
+                toast.classList.add('translate-x-full');
+                setTimeout(() => toast.remove(), 300);
+            }, duration);
+        };
+
+        // Tab Management
+        function switchTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            const tabContent = document.getElementById('content-' + tabName);
+            if (tabContent) {
+                tabContent.classList.add('active');
+            }
+            
+            // Add active class to selected tab button
+            const tabButton = document.getElementById('tab-' + tabName);
+            if (tabButton) {
+                tabButton.classList.add('active');
+            }
+            
+            console.log('🔄 Switched to tab:', tabName);
+        }
+
+        // Authentication Service (same as working version)
+        class AuthService {
+            constructor() {
+                this.currentUser = null;
+                this.initialized = false;
+            }
+
+            async initialize() {
+                console.log('🔐 Initializing AuthService...');
+                const savedUserId = localStorage.getItem('socialMediaAgent_currentUserId');
+                const persistentLogin = localStorage.getItem('socialMediaAgent_persistentLogin');
+                
+                if (savedUserId && persistentLogin === 'true') {
+                    await this.loadUserFromStorage(savedUserId);
+                }
+                
+                this.initialized = true;
+                console.log('✅ AuthService initialized');
+            }
+
+            async loadUserFromStorage(userId) {
+                try {
+                    const users = JSON.parse(localStorage.getItem('socialMediaAgent_users') || '[]');
+                    const user = users.find(u => u.id === userId);
+                    
+                    if (user) {
+                        this.currentUser = user;
+                        console.log('👤 User loaded from storage:', user.name);
+                        this.dispatchAuthEvent('login', user);
+                        return user;
+                    }
+                } catch (error) {
+                    console.error('❌ Error loading user from storage:', error);
+                }
+                return null;
+            }
+
+            async useDemoAccount() {
+                console.log('🎭 Using demo account...');
+                
+                const demoUser = {
+                    id: 'demo_user_' + Date.now(),
+                    name: 'Demo User',
+                    email: 'demo@aifluence.com',
+                    plan: 'pro',
+                    isDemo: true,
+                    createdAt: new Date().toISOString(),
+                    preferences: {
+                        theme: 'dark',
+                        notifications: true,
+                        autoSchedule: true
+                    },
+                    usage: {
+                        postsGenerated: 23,
+                        postsScheduled: 15,
+                        linkedInConnections: 1
+                    }
+                };
+                
+                localStorage.setItem('socialMediaAgent_currentUserId', demoUser.id);
+                localStorage.setItem('socialMediaAgent_persistentLogin', 'true');
+                
+                this.currentUser = demoUser;
+                console.log('✅ Demo account activated');
+                this.dispatchAuthEvent('demo-login', demoUser);
+                
+                return { success: true, user: demoUser };
+            }
+
+            async logout() {
+                console.log('🔄 Logging out user...');
+                
+                localStorage.removeItem('socialMediaAgent_currentUserId');
+                localStorage.removeItem('socialMediaAgent_persistentLogin');
+                localStorage.removeItem('socialMediaAgent_currentSession');
+                localStorage.removeItem('aifluence_auth_token');
+                
+                const previousUser = this.currentUser;
+                this.currentUser = null;
+                
+                console.log('✅ User logged out successfully');
+                this.dispatchAuthEvent('logout', previousUser);
+                
+                return { success: true };
+            }
+
+            getCurrentUser() {
+                return this.currentUser;
+            }
+
+            isAuthenticated() {
+                return this.currentUser !== null;
+            }
+
+            dispatchAuthEvent(type, user) {
+                const event = new CustomEvent('auth-state-change', {
+                    detail: { type, user }
+                });
+                document.dispatchEvent(event);
+            }
+
+            onAuthStateChange(callback) {
+                document.addEventListener('auth-state-change', (event) => {
+                    callback(event.detail.type, event.detail.user);
+                });
+            }
+        }
+
+        // Content Generator (same as working version but simplified)
+        class ContentGenerator {
+            constructor() {
+                this.currentPost = null;
+                this.generatedPosts = [];
+                this.templates = [
+                    `🚀 {{topic}} for {{audience}}:\n\n✅ Key insight: AI isn't about replacing humans, it's about amplifying potential\n✅ Focus on strategy before technology\n✅ Start small, scale smart\n\nWhat's your experience with AI implementation? Share your thoughts! 👇\n\n#AI #DigitalTransformation #Leadership #Innovation`,
+                    
+                    `💡 Thinking about {{topic}}?\n\nHere's what {{audience}} need to know:\n\n🎯 Start with clear business objectives\n🎯 Invest in your team's skills first\n🎯 Measure impact, not just implementation\n🎯 Build trust through transparency\n\nWhat challenges have you faced? Let's discuss!\n\n#ArtificialIntelligence #BusinessStrategy #Leadership`,
+                    
+                    `📊 {{topic}} Reality Check:\n\n❌ Common mistake: Technology-first approach\n✅ Better approach: Business-value-first\n\nFor {{audience}}, success means:\n• Clear ROI measurement\n• Employee empowerment\n• Sustainable integration\n• Customer value creation\n\nWhat's your take on this? 💭\n\n#AI #Innovation #Leadership #BusinessTransformation`,
+                    
+                    `🎯 {{topic}} Strategy:\n\n"The future belongs to organizations that can adapt quickly."\n\nFor {{audience}}, this means:\n→ Embracing AI as a strategic advantage\n→ Focusing on human-AI collaboration\n→ Building resilient, adaptive systems\n→ Creating value for all stakeholders\n\nHow is your organization preparing for the AI-driven future?\n\n#AI #Strategy #Leadership #FutureOfWork`,
+                    
+                    `🔍 {{topic}} Insights:\n\nAfter working with hundreds of organizations, I've learned:\n\n1️⃣ AI success starts with clear vision\n2️⃣ Culture beats technology every time\n3️⃣ Small wins build momentum\n4️⃣ Continuous learning is essential\n\n{{audience}} who get this right see 3x faster adoption rates.\n\nWhat's your biggest AI challenge right now?\n\n#AI #DigitalTransformation #Leadership #Innovation`
+                ];
+            }
+
+            async generatePost() {
+                const topic = document.getElementById('custom-topic')?.value || 'AI Readiness Assessment';
+                const audience = document.getElementById('custom-audience')?.value || 'C-level executives and business leaders';
+                const tone = document.getElementById('custom-tone')?.value || 'Professional and authoritative';
+
+                console.log('🚀 Generating LinkedIn post...', { topic, audience, tone });
+
+                const template = this.templates[Math.floor(Math.random() * this.templates.length)];
+                const content = template
+                    .replace(/\{\{topic\}\}/g, topic)
+                    .replace(/\{\{audience\}\}/g, audience)
+                    .replace(/\{\{tone\}\}/g, tone);
+
+                this.currentPost = {
+                    id: 'post_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
+                    content,
+                    topic,
+                    audience,
+                    tone,
+                    createdAt: new Date().toISOString(),
+                    platform: 'linkedin',
+                    status: 'draft'
+                };
+
+                this.displayGeneratedContent(content);
+                showToast('✨ LinkedIn post generated successfully!', 'success');
+                
+                console.log('✅ Post generated successfully');
+                return { success: true, post: this.currentPost };
+            }
+
+            async generateMultiplePosts() {
+                console.log('🔥 Generating 5 posts...');
+                
+                const topic = document.getElementById('custom-topic')?.value || 'AI Readiness Assessment';
+                const audience = document.getElementById('custom-audience')?.value || 'C-level executives and business leaders';
+                const tone = document.getElementById('custom-tone')?.value || 'Professional and authoritative';
+
+                const btn = document.getElementById('generate-multiple-btn');
+                const originalContent = btn.innerHTML;
+                
+                btn.disabled = true;
+                btn.innerHTML = `
+                    <svg class="h-4 w-4 animate-spin mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                    </svg>
+                    Generating 5 posts...
+                `;
+
+                try {
+                    showToast('🔥 Generating 5 unique posts...', 'info', 6000);
+                    
+                    this.generatedPosts = [];
+                    const posts = [];
+
+                    const angles = [
+                        'strategic perspective',
+                        'implementation challenges', 
+                        'success metrics',
+                        'common pitfalls',
+                        'future outlook'
+                    ];
+
+                    for (let i = 0; i < 5; i++) {
+                        const angle = angles[i];
+                        const postTopic = `${topic} - ${angle}`;
+                        
+                        // Use different templates for variety
+                        const template = this.templates[i % this.templates.length];
+                        const content = template
+                            .replace(/\{\{topic\}\}/g, postTopic)
+                            .replace(/\{\{audience\}\}/g, audience)
+                            .replace(/\{\{tone\}\}/g, tone);
+
+                        const post = {
+                            id: 'multi_post_' + Date.now() + '_' + i,
+                            content,
+                            topic: postTopic,
+                            audience,
+                            tone,
+                            createdAt: new Date().toISOString(),
+                            platform: 'linkedin',
+                            status: 'draft',
+                            angle
+                        };
+
+                        posts.push(post);
+                        
+                        // Small delay for realism
+                        await new Promise(resolve => setTimeout(resolve, 300));
+                    }
+
+                    this.generatedPosts = posts;
+                    this.displayMultiplePosts(posts);
+                    
+                    showToast(`✅ Generated ${posts.length} posts successfully!`, 'success');
+                    console.log('✅ Multiple posts generated successfully');
+                    
+                    return { success: true, posts };
+
+                } catch (error) {
+                    console.error('❌ Error generating multiple posts:', error);
+                    showToast('❌ Failed to generate posts. Please try again.', 'error');
+                    return { success: false, error: error.message };
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = originalContent;
+                }
+            }
+
+            displayGeneratedContent(content) {
+                const contentDisplay = document.getElementById('content-text');
+                const generatedSection = document.getElementById('generated-content');
+                const charCount = document.getElementById('char-count');
+                
+                if (contentDisplay && generatedSection) {
+                    contentDisplay.textContent = content;
+                    if (charCount) {
+                        charCount.textContent = `Character count: ${content.length}`;
+                    }
+                    generatedSection.classList.remove('hidden');
+                    generatedSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+
+            displayMultiplePosts(posts) {
+                // Create multiple posts container
+                let container = document.getElementById('multiple-posts-container');
+                if (!container) {
+                    container = document.createElement('div');
+                    container.id = 'multiple-posts-container';
+                    container.className = 'mt-6 space-y-4';
+                    
+                    const generatedSection = document.getElementById('generated-content');
+                    if (generatedSection && generatedSection.parentNode) {
+                        generatedSection.parentNode.insertBefore(container, generatedSection.nextSibling);
+                    } else {
+                        document.getElementById('content-generator').appendChild(container);
+                    }
+                }
+
+                container.innerHTML = `
+                    <div class="bg-hootsuite-dark border border-hootsuite-border rounded-xl p-6 fade-in">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-semibold text-hootsuite-text">Generated Posts (${posts.length})</h3>
+                            <button onclick="scheduleAllPosts()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm transition-colors">
+                                Schedule All
+                            </button>
+                        </div>
+                        <div class="space-y-4">
+                            ${posts.map((post, index) => `
+                                <div class="bg-hootsuite-panel border border-hootsuite-border rounded-lg p-4">
+                                    <div class="flex items-start justify-between mb-2">
+                                        <span class="text-sm text-hootsuite-text-muted">Post ${index + 1} - ${post.angle}</span>
+                                        <div class="flex space-x-2">
+                                            <button onclick="editPost('${post.id}')" class="text-blue-400 hover:text-blue-300 text-sm">Edit</button>
+                                            <button onclick="schedulePost('${post.id}')" class="text-green-400 hover:text-green-300 text-sm">Schedule</button>
+                                        </div>
+                                    </div>
+                                    <div class="text-hootsuite-text text-sm line-clamp-3 mb-2">${post.content}</div>
+                                    <div class="text-xs text-hootsuite-text-muted">${post.content.length} characters</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+
+                container.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Main Application Class
+        class AifluenceApp {
+            constructor() {
+                this.authService = new AuthService();
+                this.contentGenerator = new ContentGenerator();
+                this.currentUser = null;
+                this.initialized = false;
+            }
+
+            async init() {
+                console.log('🚀 Initializing AIfluence App...');
+                
+                try {
+                    await this.authService.initialize();
+                    this.setupGlobalReferences();
+                    this.setupEventListeners();
+                    this.setupAuthStateListener();
+                    this.updateUIForAuthState();
+                    
+                    this.initialized = true;
+                    console.log('✅ AIfluence App initialized successfully');
+                    
+                } catch (error) {
+                    console.error('❌ Failed to initialize app:', error);
+                    showToast('Failed to initialize application. Please refresh the page.', 'error');
+                }
+            }
+
+            setupGlobalReferences() {
+                window.authService = this.authService;
+                window.contentGenerator = this.contentGenerator;
+                window.app = this;
+                
+                window.handleLogout = this.handleLogout.bind(this);
+                window.useDemoAccount = this.useDemoAccount.bind(this);
+                window.generateLinkedInPost = this.generateLinkedInPost.bind(this);
+                window.generateMultiplePosts = this.generateMultiplePosts.bind(this);
+                window.switchTab = switchTab;
+                
+                // Settings functions
+                window.saveProfile = this.saveProfile.bind(this);
+                window.connectLinkedIn = this.connectLinkedIn.bind(this);
+                window.upgradePlan = this.upgradePlan.bind(this);
+                
+                console.log('✅ Global references set up');
+            }
+
+            setupEventListeners() {
+                this.attachEventListener('demo-account-btn', 'click', this.useDemoAccount.bind(this));
+                this.attachEventListener('generate-btn', 'click', this.generateLinkedInPost.bind(this));
+                this.attachEventListener('generate-multiple-btn', 'click', this.generateMultiplePosts.bind(this));
+                
+                // Tab buttons
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const tabName = btn.getAttribute('data-tab');
+                        switchTab(tabName);
+                    });
+                });
+                
+                console.log('✅ Event listeners attached');
+            }
+
+            attachEventListener(elementId, event, handler) {
+                const element = document.getElementById(elementId);
+                if (element) {
+                    element.addEventListener(event, (e) => {
+                        e.preventDefault();
+                        try {
+                            handler(e);
+                        } catch (error) {
+                            console.error(`Error in ${elementId} ${event} handler:`, error);
+                            showToast('An error occurred. Please try again.', 'error');
+                        }
+                    });
+                    console.log(`✅ ${elementId} event listener attached`);
+                } else {
+                    console.log(`⚠️ ${elementId} element not found`);
+                }
+            }
+
+            setupAuthStateListener() {
+                this.authService.onAuthStateChange((type, user) => {
+                    console.log(`🔐 Auth state changed: ${type}`, user);
+                    this.currentUser = user;
+                    window.currentUser = user;
+                    this.updateUIForAuthState();
+                });
+            }
+
+            updateUIForAuthState() {
+                const isAuthenticated = this.authService.isAuthenticated();
+                const user = this.authService.getCurrentUser();
+                
+                this.toggleElement('auth-section', !isAuthenticated);
+                this.toggleElement('main-app', isAuthenticated);
+                
+                if (isAuthenticated && user) {
+                    this.updateUserDisplay(user);
+                }
+                
+                console.log(`🔄 UI updated for auth state: ${isAuthenticated ? 'authenticated' : 'not authenticated'}`);
+            }
+
+            toggleElement(elementId, show) {
+                const element = document.getElementById(elementId);
+                if (element) {
+                    if (show) {
+                        element.classList.remove('hidden');
+                    } else {
+                        element.classList.add('hidden');
+                    }
+                }
+            }
+
+            updateUserDisplay(user) {
+                const userNameElements = document.querySelectorAll('.user-name');
+                userNameElements.forEach(element => {
+                    element.textContent = user.name;
+                });
+                
+                const userPlanElements = document.querySelectorAll('.user-plan');
+                userPlanElements.forEach(element => {
+                    element.textContent = user.plan || 'free';
+                });
+                
+                // Update settings form
+                const nameInput = document.getElementById('settings-name');
+                const emailInput = document.getElementById('settings-email');
+                if (nameInput) nameInput.value = user.name || '';
+                if (emailInput) emailInput.value = user.email || '';
+            }
+
+            async handleLogout() {
+                if (confirm('Are you sure you want to sign out?')) {
+                    await this.authService.logout();
+                    showToast('You have been signed out successfully.', 'success');
+                }
+            }
+
+            async useDemoAccount() {
+                console.log('🎭 Demo account initiated');
+                
+                showToast('Setting up demo account...', 'info');
+                
+                const result = await this.authService.useDemoAccount();
+                
+                if (result.success) {
+                    showToast('Welcome to the AIfluence demo!', 'success');
+                } else {
+                    showToast('Failed to set up demo account.', 'error');
+                }
+            }
+
+            async generateLinkedInPost() {
+                if (!this.authService.isAuthenticated()) {
+                    showToast('Please sign in to generate content.', 'error');
+                    return;
+                }
+                
+                const result = await this.contentGenerator.generatePost();
+                
+                if (!result.success) {
+                    showToast(result.error || 'Failed to generate post.', 'error');
+                }
+            }
+
+            async generateMultiplePosts() {
+                if (!this.authService.isAuthenticated()) {
+                    showToast('Please sign in to generate content.', 'error');
+                    return;
+                }
+                
+                const result = await this.contentGenerator.generateMultiplePosts();
+                
+                if (!result.success) {
+                    showToast(result.error || 'Failed to generate posts.', 'error');
+                }
+            }
+
+            // Settings functions
+            saveProfile() {
+                showToast('Profile settings saved! (Demo mode - changes not persisted)', 'success');
+            }
+
+            connectLinkedIn() {
+                showToast('LinkedIn connection feature coming soon!', 'info');
+            }
+
+            upgradePlan() {
+                showToast('Upgrade feature coming soon!', 'info');
+            }
+        }
+
+        // Initialize app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log('🎯 DOM loaded, initializing AIfluence App...');
+            
+            // Hide loading indicator
+            setTimeout(() => {
+                document.getElementById('loading-indicator').classList.add('hidden');
+            }, 1000);
+            
+            // Create and initialize app
+            window.aifluenceApp = new AifluenceApp();
+            await window.aifluenceApp.init();
+        });
+
+        console.log('✅ All scripts loaded successfully');
+    </script>
+</body>
+</html>
