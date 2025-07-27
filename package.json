@@ -15,6 +15,7 @@
     "@supabase/supabase-js": "^2.39.3",
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^9.0.2",
+    "ollama": "^0.5.16",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
